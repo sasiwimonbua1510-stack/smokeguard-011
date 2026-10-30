@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmokeGuard</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    padding: 25px;
+    background: #071426;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 55px;
+}
+.logo {
+    background: #00d5ff;
+    color: #071426;
+    padding: 12px 17px;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: bold;
+}
+h1 { font-size: 23px; }
+.subtitle { color: #8fa9c5; font-size: 11px; }
+h2 { font-size: 30px; }
+p { color: #9eb2ca; line-height: 1.6; }
+.card {
+    background: #10243d;
+    border: 1px solid #203c5b;
+    border-radius: 18px;
+    padding: 22px;
+    margin-top: 20px;
+}
+.status { color: #00e6a0; }
+button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 25px;
+    border: 0;
+    border-radius: 12px;
+    background: #00c8f0;
+    font-weight: bold;
+    font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">S</div>
+    <div>
+        <h1>SmokeGuard</h1>
+        <div class="subtitle">COMMUNITY SMOKE MONITORING</div>
+    </div>
+</header>
+
+<h2>Welcome to<br>SmokeGuard</h2>
+<p>ระบบเฝ้าระวังควันและแจ้งเตือน<br>เพื่อสร้างชุมชนที่ปลอดภัยยิ่งขึ้น</p>
+
+<div class="card">
+    <p>SYSTEM STATUS</p>
+    <h3 class="status">● Waiting for connection</h3>
+    <p>กำลังรอการเชื่อมต่อกับอุปกรณ์</p>
+</div>
+
+<div class="card">
+    <p>SMOKE SENSOR</p>
+    <h2>--</h2>
+    <p>Waiting for sensor data</p>
+</div>
+
+<button onclick="alert('Welcome to SmokeGuard!')">
+    Get Started
+</button>
+
+</body>
+</html>
