@@ -4,81 +4,246 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmokeGuard</title>
+
 <style>
-* { box-sizing: border-box; }
-body {
+* {
     margin: 0;
-    padding: 25px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
     background: #071426;
     color: white;
-    font-family: Arial, sans-serif;
-}
-header {
+    min-height: 100vh;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 55px;
+    padding: 20px;
 }
+
+.container {
+    width: 100%;
+    max-width: 420px;
+}
+
 .logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-icon {
+    width: 65px;
+    height: 65px;
     background: #00d5ff;
     color: #071426;
-    padding: 12px 17px;
-    border-radius: 12px;
-    font-size: 22px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    font-size: 32px;
     font-weight: bold;
+    margin: auto auto 15px;
 }
-h1 { font-size: 23px; }
-.subtitle { color: #8fa9c5; font-size: 11px; }
-h2 { font-size: 30px; }
-p { color: #9eb2ca; line-height: 1.6; }
+
+.logo h1 {
+    font-size: 29px;
+    letter-spacing: 1px;
+}
+
+.logo p {
+    color: #8ba8c8;
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 7px;
+}
+
 .card {
     background: #10243d;
     border: 1px solid #203c5b;
-    border-radius: 18px;
-    padding: 22px;
-    margin-top: 20px;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 15px 40px #0005;
 }
-.status { color: #00e6a0; }
+
+.card h2 {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: #91a9c4;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    color: #b7c9dd;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 18px;
+    background: #071426;
+    border: 1px solid #294665;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    border-color: #00d5ff;
+}
+
 button {
     width: 100%;
-    padding: 16px;
-    margin-top: 25px;
-    border: 0;
-    border-radius: 12px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
     background: #00c8f0;
+    color: #071426;
+    font-size: 15px;
     font-weight: bold;
-    font-size: 16px;
+    cursor: pointer;
+}
+
+.switch {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 13px;
+    color: #91a9c4;
+}
+
+.switch span {
+    color: #00d5ff;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.message {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #00e6a0;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+footer {
+    text-align: center;
+    color: #607d9c;
+    font-size: 11px;
+    margin-top: 25px;
 }
 </style>
 </head>
+
 <body>
 
-<header>
-    <div class="logo">S</div>
-    <div>
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-icon">S</div>
         <h1>SmokeGuard</h1>
-        <div class="subtitle">COMMUNITY SMOKE MONITORING</div>
+        <p>COMMUNITY SMOKE MONITORING</p>
     </div>
-</header>
 
-<h2>Welcome to<br>SmokeGuard</h2>
-<p>ระบบเฝ้าระวังควันและแจ้งเตือน<br>เพื่อสร้างชุมชนที่ปลอดภัยยิ่งขึ้น</p>
+    <!-- LOGIN -->
+    <div class="card" id="loginPage">
 
-<div class="card">
-    <p>SYSTEM STATUS</p>
-    <h3 class="status">● Waiting for connection</h3>
-    <p>กำลังรอการเชื่อมต่อกับอุปกรณ์</p>
+        <h2>Welcome Back</h2>
+        <p class="description">
+            เข้าสู่ระบบเพื่อติดตามสถานะการตรวจจับควัน
+        </p>
+
+        <form onsubmit="login(event)">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail"
+                   placeholder="example@email.com" required>
+
+            <label>Password</label>
+            <input type="password" id="loginPassword"
+                   placeholder="Enter your password" required>
+
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p class="switch">
+            Don't have an account?
+            <span onclick="showRegister()">Create Account</span>
+        </p>
+
+        <div class="message" id="loginMessage"></div>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="card hidden" id="registerPage">
+
+        <h2>Create Account</h2>
+        <p class="description">
+            สมัครสมาชิกเพื่อเริ่มใช้งาน SmokeGuard
+        </p>
+
+        <form onsubmit="register(event)">
+            <label>Full Name</label>
+            <input type="text" id="registerName"
+                   placeholder="Your name" required>
+
+            <label>Email Address</label>
+            <input type="email" id="registerEmail"
+                   placeholder="example@email.com" required>
+
+            <label>Password</label>
+            <input type="password" id="registerPassword"
+                   placeholder="At least 6 characters"
+                   minlength="6" required>
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <p class="switch">
+            Already have an account?
+            <span onclick="showLogin()">Sign In</span>
+        </p>
+
+        <div class="message" id="registerMessage"></div>
+    </div>
+
+    <footer>
+        SmokeGuard © 2026 | Smart Community Monitoring
+    </footer>
+
 </div>
 
-<div class="card">
-    <p>SMOKE SENSOR</p>
-    <h2>--</h2>
-    <p>Waiting for sensor data</p>
-</div>
+<script>
+function showRegister() {
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("registerPage").classList.remove("hidden");
+}
 
-<button onclick="alert('Welcome to SmokeGuard!')">
-    Get Started
-</button>
+function showLogin() {
+    document.getElementById("registerPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+}
+
+function login(event) {
+    event.preventDefault();
+    document.getElementById("loginMessage").textContent =
+        "หน้านี้ยังไม่ได้เชื่อมต่อระบบสมาชิก Firebase";
+}
+
+function register(event) {
+    event.preventDefault();
+    document.getElementById("registerMessage").textContent =
+        "หน้านี้ยังไม่ได้เชื่อมต่อระบบสมัครสมาชิก Firebase";
+}
+</script>
 
 </body>
 </html>
