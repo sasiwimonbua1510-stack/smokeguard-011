@@ -523,25 +523,25 @@ h2{
       <div class="cards">
         <div class="card">
           <div class="card-label">MQ-2 SENSOR</div>
-          <div class="value">186</div>
-          <div class="status">● Normal · Demo</div>
+         <div class="value" id="dashMq2Value">186</div>
+<div class="status" id="dashMq2Status">Normal • Demo</div>
         </div>
 
         <div class="card">
           <div class="card-label">MQ-135 SENSOR</div>
-          <div class="value">92</div>
-          <div class="status">● Normal · Demo</div>
+         <div class="value" id="dashMq135Value">92</div>
+<div class="status" id="dashMq135Status">Normal • Demo</div>
         </div>
 
         <div class="card">
           <div class="card-label">DEVICE STATUS</div>
-          <div class="value" style="color:var(--amber)">Offline</div>
+          <div class="value" id="dashDeviceStatus" style="color:var(--amber)">Offline</div>
           <div class="sub">ยังไม่ได้เชื่อมต่ออุปกรณ์จริง</div>
         </div>
 
         <div class="card">
           <div class="card-label">ACTIVE ALERTS</div>
-          <div class="value">01</div>
+          <div class="value" id="dashAlertCount">01</div>
           <div class="sub">ข้อมูลตัวอย่าง</div>
         </div>
       </div>
@@ -549,9 +549,9 @@ h2{
       <h3 class="section-title">สถานะระบบล่าสุด</h3>
 
       <div class="card">
-        <div class="info-row"><span>MQ-2</span><span class="status">Normal</span></div>
-        <div class="info-row"><span>MQ-135</span><span class="status">Normal</span></div>
-        <div class="info-row"><span>อุปกรณ์</span><span style="color:var(--amber)">Offline</span></div>
+        <div class="info-row"><span>MQ-2</span><span class="status" id="latestMq2Status">Normal</span></div>
+<div class="info-row"><span>MQ-135</span><span class="status" id="latestMq135Status">Normal</span></div>
+<div class="info-row"><span>อุปกรณ์</span><span id="latestDeviceStatus" style="color:var(--amber)">Offline</span></div>
       </div>
     </section>
 
@@ -563,13 +563,13 @@ h2{
       <div class="cards">
         <div class="card">
           <div class="card-label">MQ-2</div>
-          <div class="value">186 <span class="unit">ADC</span></div>
+         <div class="value"><span id="monMq2Value">186</span> <span class="unit">ADC</span></div>
           <div class="status">Normal · Demo</div>
         </div>
 
         <div class="card">
-          <div class="card-label">MQ-135</div>
-          <div class="value">92 <span class="unit">ADC</span></div>
+          <div class="card-label">MQ-135</div>     
+          <div class="value"><span id="monMq135Value">92</span> <span class="unit">ADC</span></div>
           <div class="status">Normal · Demo</div>
         </div>
       </div>
@@ -931,40 +931,43 @@ function startSmokeGuardRealtime() {
     Notification.requestPermission();
   }
 
-  rtdb.ref("SmokeGuard").on("value", function(snapshot) {
+    rtdb.ref("SmokeGuard").on("value", function(snapshot) {
     const data = snapshot.val();
     if (!data) return;
 
     const mq2 = data.MQ2 ?? "--";
     const mq135 = data.MQ135 ?? "--";
-    const status = String(data.STATUS ?? "UNKNOWN").toUpperCase();
-
-    // อัปเดตค่าบนหน้าจอ (ถ้ามี element ตาม id เหล่านี้อยู่ใน HTML)
-    const mq2El = document.getElementById("mq2Value");
-    const mq135El = document.getElementById("mq135Value");
-    const statusEl = document.getElementById("statusValue");
-    const alertBoxEl = document.getElementById("alertBanner");
-
-    if (mq2El) mq2El.textContent = mq2;
-    if (mq135El) mq135El.textContent = mq135;
-    if (statusEl) statusEl.textContent = status;
+    const status = String(data.STATUS ?? "NORMAL").toUpperCase();
 
     const isDanger =
       status.includes("DANGER") ||
       status.includes("ALERT") ||
       status.includes("SMOKE") ||
       status.includes("GAS") ||
+      status.includes("WARNING") ||
       status.includes("เตือน") ||
       status.includes("อันตราย");
 
-    if (alertBoxEl) {
-      alertBoxEl.style.display = isDanger ? "block" : "none";
-      alertBoxEl.textContent = isDanger
-        ? `แจ้งเตือน! สถานะ: ${status} (MQ2: ${mq2}, MQ135: ${mq135})`
-        : "";
-    }
+    const setText = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
 
-    // แจ้งเตือนเฉพาะตอนเปลี่ยนสถานะเป็นอันตราย เพื่อไม่ให้เด้งซ้ำรัวๆ
+    setText("dashMq2Value", mq2);
+    setText("monMq2Value", mq2);
+    setText("dashMq135Value", mq135);
+    setText("monMq135Value", mq135);
+
+    const statusLabel = isDanger ? `Alert • ${status}` : `Normal • ${status}`;
+    setText("dashMq2Status", statusLabel);
+    setText("dashMq135Status", statusLabel);
+    setText("latestMq2Status", status);
+    setText("latestMq135Status", status);
+
+    setText("dashDeviceStatus", "Online");
+    setText("latestDeviceStatus", "Online");
+    setText("dashAlertCount", isDanger ? "01" : "00");
+
     if (isDanger && lastAlertStatus !== status) {
       alert(`⚠️ แจ้งเตือน SmokeGuard!\nสถานะ: ${status}\nMQ2: ${mq2} | MQ135: ${mq135}`);
 
@@ -979,7 +982,6 @@ function startSmokeGuardRealtime() {
   }, function(error) {
     console.error("อ่านข้อมูล SmokeGuard Realtime ไม่สำเร็จ:", error);
   });
-}
   
 </script>
 </body>
