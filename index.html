@@ -785,9 +785,18 @@ document.getElementById('registerForm').addEventListener('submit', async functio
   try {
     const result = await auth.createUserWithEmailAndPassword(email, password);
 
-    await result.user.updateProfile({
-      displayName: fullname
-    });
+await result.user.updateProfile({
+  displayName: fullname
+});
+
+// บันทึกข้อมูลสมาชิกลง Firestore
+await db.collection('users').doc(result.user.uid).set({
+  uid: result.user.uid,
+  fullname: fullname,
+  email: email,
+  phone: phone,
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
 
     alert('สมัครสมาชิกสำเร็จ!');
 
