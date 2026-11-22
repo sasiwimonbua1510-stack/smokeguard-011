@@ -3,655 +3,253 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmokeGuard | Smart Monitoring</title>
-
+<title>SmokeGuard | Air Monitoring System</title>
 <style>
 :root {
-    --bg:#071426;
-    --panel:#10243d;
-    --panel2:#142c49;
-    --cyan:#00d5ff;
-    --text:#f4f8ff;
-    --muted:#91a9c4;
-    --green:#00dfa0;
-    --yellow:#ffc857;
-    --red:#ff647c;
-    --border:#203c5b;
-}
-
-* {
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
-
-body {
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial,sans-serif;
-    min-height:100vh;
-}
-
-button,input {
-    font:inherit;
-}
-
-button {
-    cursor:pointer;
-}
-
-.hidden {
-    display:none!important;
-}
-
-/* LOGIN */
-
-#auth {
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-}
-
-.auth-box {
-    width:100%;
-    max-width:410px;
-}
-
-.brand {
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.logo {
-    width:65px;
-    height:65px;
-    border-radius:19px;
-    background:var(--cyan);
-    color:#071426;
-    display:grid;
-    place-items:center;
-    font-size:32px;
-    font-weight:bold;
-    margin:0 auto 15px;
-}
-
-.brand h1 {
-    letter-spacing:2px;
-    font-size:28px;
-}
-
-.brand p {
-    color:var(--muted);
-    font-size:11px;
-    letter-spacing:2px;
-    margin-top:8px;
-}
-
-.card {
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:23px;
-    margin-bottom:17px;
-}
-
-.card h2 {
-    margin-bottom:10px;
-}
-
-.muted {
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
-}
-
-label {
-    display:block;
-    color:var(--muted);
-    font-size:13px;
-    margin:17px 0 8px;
-}
-
-input {
-    width:100%;
-    padding:13px;
-    border:1px solid var(--border);
-    border-radius:9px;
-    background:#071426;
-    color:white;
-    outline:none;
-}
-
-input:focus {
-    border-color:var(--cyan);
-}
-
-.primary {
-    width:100%;
-    padding:14px;
-    margin-top:20px;
-    background:var(--cyan);
-    color:#071426;
-    border:0;
-    border-radius:9px;
-    font-weight:bold;
-}
-
-.link {
-    color:var(--cyan);
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.auth-switch {
-    text-align:center;
-    color:var(--muted);
-    font-size:13px;
-    margin-top:20px;
-}
-
-.demo-note {
-    font-size:11px;
-    color:var(--yellow);
-    margin-top:14px;
-    line-height:1.6;
-}
-
-/* APP LAYOUT */
-
-#app {
-    display:none;
-    min-height:100vh;
-}
-
-.sidebar {
-    width:245px;
-    background:#091a30;
-    border-right:1px solid var(--border);
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-    padding:25px 16px;
-    z-index:5;
-}
-
-.side-brand {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:38px;
-    padding-left:8px;
-}
-
-.small-logo {
-    width:39px;
-    height:39px;
-    border-radius:11px;
-    background:var(--cyan);
-    color:#071426;
-    display:grid;
-    place-items:center;
-    font-weight:bold;
-    font-size:20px;
-}
-
-.side-brand h2 {
-    font-size:19px;
-}
-
-.side-brand p {
-    color:var(--muted);
-    font-size:9px;
-    margin-top:4px;
-}
-
-.menu-title {
-    color:#58718e;
-    font-size:10px;
-    letter-spacing:2px;
-    padding:0 10px;
-    margin-bottom:12px;
-}
-
-.nav-btn {
-    width:100%;
-    text-align:left;
-    padding:13px 12px;
-    border:0;
-    border-radius:9px;
-    color:#a9bdd3;
-    background:transparent;
-    margin-bottom:5px;
-    font-size:13px;
-}
-
-.nav-btn:hover,.nav-btn.active {
-    background:#143451;
-    color:var(--cyan);
-}
-
-.nav-icon {
-    display:inline-block;
-    width:27px;
-}
-
-.side-bottom {
-    position:absolute;
-    bottom:20px;
-    left:16px;
-    right:16px;
-}
-
-.side-bottom button {
-    width:100%;
-    padding:12px;
-    border:1px solid var(--border);
-    background:transparent;
-    color:var(--muted);
-    border-radius:9px;
-}
-
-.main {
-    margin-left:245px;
-    min-height:100vh;
-}
-
-.topbar {
-    height:75px;
-    border-bottom:1px solid var(--border);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 35px;
-    background:#091a30;
-}
-
-.topbar h2 {
-    font-size:18px;
-}
-
-.user-badge {
-    color:var(--cyan);
-    font-size:13px;
-}
-
-.content {
-    padding:32px 35px;
-    max-width:1500px;
-    margin:auto;
-}
-
-.page {
-    display:none;
-}
-
-.page.active {
-    display:block;
-}
-
-.page-heading {
-    margin-bottom:25px;
-}
-
-.page-heading h1 {
-    font-size:26px;
-    margin-bottom:9px;
-}
-
-.page-heading p {
-    color:var(--muted);
-    font-size:13px;
-}
-
-/* DASHBOARD */
-
-.grid {
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:20px;
-}
-
-.stat {
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:15px;
-    padding:20px;
-}
-
-.stat-label {
-    color:var(--muted);
-    font-size:12px;
-}
-
-.stat-value {
-    font-size:29px;
-    font-weight:bold;
-    margin:15px 0 8px;
-}
-
-.stat-foot {
-    font-size:11px;
-    color:var(--muted);
-}
-
-.green {color:var(--green);}
-.yellow {color:var(--yellow);}
-.red {color:var(--red);}
-.cyan {color:var(--cyan);}
-
-.two-col {
-    display:grid;
-    grid-template-columns:1.4fr 1fr;
-    gap:17px;
-}
-
-.section-title {
-    font-size:15px;
-    margin-bottom:18px;
-}
-
-.sensor-row {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:16px 0;
-    border-bottom:1px solid var(--border);
-}
-
-.sensor-row:last-child {
-    border-bottom:0;
-}
-
-.sensor-name {
-    font-size:13px;
-}
-
-.sensor-reading {
-    font-size:20px;
-    font-weight:bold;
-}
-
-.badge {
-    display:inline-block;
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:10px;
-    background:#183c39;
-    color:var(--green);
-}
-
-.badge.warning {
-    background:#45391d;
-    color:var(--yellow);
-}
-
-.badge.offline {
-    background:#303b4a;
-    color:#aab7c5;
-}
-
-.activity {
-    padding:14px 0;
-    border-bottom:1px solid var(--border);
-    font-size:13px;
-}
-
-.activity:last-child {
-    border-bottom:0;
-}
-
-.activity small {
-    display:block;
-    color:var(--muted);
-    margin-top:7px;
-}
-
-/* MONITORING */
-
-.sensor-card {
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:24px;
-    margin-bottom:15px;
-}
-
-.sensor-card h3 {
-    font-size:15px;
-}
-
-.big-reading {
-    font-size:42px;
-    font-weight:bold;
-    margin:20px 0 8px;
-}
-
-.progress {
-    height:7px;
-    background:#203c5b;
-    border-radius:10px;
-    overflow:hidden;
-    margin-top:17px;
-}
-
-.progress div {
-    height:100%;
-    background:var(--cyan);
-    width:0%;
-}
-
-.info-box {
-    padding:15px;
-    background:#0b1b30;
-    border:1px solid var(--border);
-    border-radius:10px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.7;
-    margin-top:15px;
-}
-
-/* MAP */
-
-.map-area {
-    height:390px;
-    background:#10243d;
-    border:1px solid var(--border);
-    border-radius:16px;
-    position:relative;
-    overflow:hidden;
-    background-image:
-        linear-gradient(#24405a44 1px,transparent 1px),
-        linear-gradient(90deg,#24405a44 1px,transparent 1px);
-    background-size:45px 45px;
-}
-
-.map-center {
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    color:#58718e;
-    text-align:center;
-    font-size:13px;
-}
-
-.marker {
-    position:absolute;
-    width:19px;
-    height:19px;
-    border-radius:50%;
-    border:3px solid white;
-    cursor:pointer;
-    box-shadow:0 0 15px currentColor;
-}
-
-.marker.green {background:var(--green);}
-.marker.yellow {background:var(--yellow);}
-.marker.red {background:var(--red);}
-
-.map-detail {
-    margin-top:15px;
-}
-
-/* TABLE */
-
-.table-wrap {
-    overflow-x:auto;
-}
-
-table {
-    width:100%;
-    border-collapse:collapse;
-    font-size:12px;
-    min-width:500px;
-}
-
-th,td {
-    padding:15px 12px;
-    text-align:left;
-    border-bottom:1px solid var(--border);
-}
-
-th {
-    color:var(--muted);
-    font-weight:normal;
-}
-
-/* ALERTS */
-
-.alert-item {
-    padding:18px;
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-left:4px solid var(--yellow);
-    border-radius:10px;
-    margin-bottom:12px;
-}
-
-.alert-item.critical {
-    border-left-color:var(--red);
-}
-
-.alert-item p {
-    color:var(--muted);
-    font-size:12px;
-    margin-top:8px;
-}
-
-/* PROFILE */
-
-.profile-avatar {
-    width:70px;
-    height:70px;
-    background:#153b58;
-    border-radius:50%;
-    display:grid;
-    place-items:center;
-    color:var(--cyan);
-    font-size:25px;
-    margin-bottom:15px;
-}
-
-footer {
-    text-align:center;
-    padding:25px;
-    color:#526b87;
-    font-size:10px;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:950px) {
-    .grid {grid-template-columns:repeat(2,1fr);}
-    .two-col {grid-template-columns:1fr;}
-}
-
-@media(max-width:650px) {
-    .sidebar {
-        width:100%;
-        height:65px;
-        top:auto;
-        bottom:0;
-        padding:5px;
-        border-right:0;
-        border-top:1px solid var(--border);
-        display:flex;
-        justify-content:space-around;
-        align-items:center;
-    }
-
-    .side-brand,.menu-title,.side-bottom {
-        display:none;
-    }
-
-    .nav-btn {
-        width:auto;
-        padding:10px 7px;
-        margin:0;
-        font-size:10px;
-        text-align:center;
-    }
-
-    .nav-icon {
-        display:block;
-        width:auto;
-        font-size:17px;
-        margin-bottom:3px;
-    }
-
-    .main {
-        margin-left:0;
-        padding-bottom:70px;
-    }
-
-    .topbar {
-        padding:0 18px;
-        height:65px;
-    }
-
-    .content {
-        padding:22px 15px;
-    }
-
-    .grid {
-        gap:9px;
-    }
-
-    .stat {
-        padding:15px 12px;
-    }
-
-    .stat-value {
-        font-size:23px;
-    }
-
-    .page-heading h1 {
-        font-size:22px;
-    }
+  --bg:#0b1220; --panel:#111c2e; --panel2:#172438;
+  --line:#26364d; --text:#e8eef7; --muted:#91a2b9;
+  --cyan:#36c5df; --green:#32c48d; --amber:#f3b94f;
+  --red:#f06b70;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Thai",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#0e1929;border-right:1px solid var(--line);padding:25px 16px;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 9px 28px}
+.logo{width:40px;height:40px;background:#12384a;border:1px solid #246078;border-radius:10px;display:grid;place-items:center;color:var(--cyan);font-size:23px}
+.brand strong{font-size:19px;letter-spacing:.4px}
+.brand small{display:block;color:var(--muted);font-size:10px;margin-top:4px;letter-spacing:1px}
+.nav-label{font-size:10px;color:#71839b;letter-spacing:1.5px;padding:14px 12px 9px}
+.nav button{width:100%;border:0;background:transparent;color:#aebdd0;text-align:left;padding:12px;border-radius:8px;margin:3px 0;font-size:14px}
+.nav button:hover,.nav button.active{background:#193047;color:#fff}
+.nav button.active{border-left:3px solid var(--cyan)}
+.sidebar-bottom{margin-top:35px;border-top:1px solid var(--line);padding:18px 10px;color:var(--muted);font-size:12px;line-height:1.8}
+.main{flex:1;min-width:0}
+.topbar{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#0d1726}
+.topbar small{color:var(--muted)}
+.user{font-size:13px;color:#c7d3e2}
+.content{padding:30px;max-width:1400px;margin:auto}
+.page-title{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:24px}
+h1{font-size:25px;margin:0 0 7px}
+.subtitle{font-size:13px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:20px;font-size:11px;background:#183b35;color:var(--green)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.grid{display:grid;gap:16px}
+.metrics{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:19px;min-width:0}
+.card-label{font-size:12px;color:var(--muted)}
+.metric-value{font-size:29px;font-weight:700;margin:13px 0 7px}
+.metric-note{font-size:11px;color:var(--muted)}
+.two{grid-template-columns:1.5fr 1fr}
+.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.section-heading{font-size:15px;font-weight:600;margin:0 0 17px}
+.sensor-value{font-size:31px;font-weight:700;margin:8px 0}
+.unit{font-size:12px;color:var(--muted)}
+.status-normal{color:var(--green)}
+.status-warn{color:var(--amber)}
+.status-danger{color:var(--red)}
+.chart{height:190px;display:flex;align-items:end;gap:10px;padding:15px 5px 24px;border-bottom:1px solid var(--line);position:relative}
+.bar{flex:1;background:linear-gradient(180deg,#36c5df,#17627b);border-radius:4px 4px 0 0;min-width:7px;position:relative}
+.bar span{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+th,td{text-align:left;padding:14px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500}
+td{color:#d7e1ed}
+.pill{padding:5px 9px;border-radius:20px;font-size:10px}
+.pill.green{background:#153c32;color:var(--green)}
+.pill.amber{background:#46351b;color:var(--amber)}
+.pill.red{background:#48252c;color:var(--red)}
+.notice{padding:15px;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:8px;margin-bottom:12px;background:var(--panel2)}
+.notice strong{font-size:13px}
+.notice p{font-size:12px;color:var(--muted);margin:7px 0}
+.btn{border:1px solid var(--line);background:#193047;color:#eaf6ff;padding:10px 14px;border-radius:7px;font-size:12px}
+.btn.primary{background:#147d98;border-color:#147d98}
+.form{max-width:480px}
+.field{margin:16px 0}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
+.field input{width:100%;padding:12px;background:#0c1726;border:1px solid var(--line);border-radius:7px;color:white;outline:none}
+.field input:focus{border-color:var(--cyan)}
+.profile-row{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);font-size:13px}
+.profile-row span:first-child{color:var(--muted)}
+.page{display:none}.page.active{display:block}
+.mobile-menu{display:none}
+.footer-note{color:var(--muted);font-size:11px;margin-top:18px}
+@media(max-width:900px){
+ .sidebar{width:205px}.metrics{grid-template-columns:repeat(2,1fr)}
+ .two{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+ .app{display:block}.sidebar{width:100%;padding:12px;border-right:0;border-bottom:1px solid var(--line)}
+ .brand{padding:4px 7px 12px}.brand small{display:none}
+ .nav-label,.sidebar-bottom{display:none}
+ .nav{display:flex;overflow-x:auto;gap:5px}
+ .nav button{white-space:nowrap;width:auto;padding:10px;font-size:12px}
+ .topbar{height:50px;padding:0 15px}
+ .content{padding:20px 14px}
+ .metrics,.three{grid-template-columns:1fr 1fr}
+ h1{font-size:21px}
+ .metric-value{font-size:24px}
 }
 </style>
 </head>
-
 <body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">⌁</div>
+    <div><strong>SmokeGuard</strong><small>AIR MONITORING SYSTEM</small></div>
+  </div>
+  <div class="nav-label">MAIN MENU</div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+    <button data-page="monitoring">◉ &nbsp; Monitoring</button>
+    <button data-page="alerts">⚑ &nbsp; Alert Center</button>
+    <button data-page="history">▤ &nbsp; History</button>
+    <button data-page="device">▣ &nbsp; Device Status</button>
+  </nav>
+  <div class="nav-label">ACCOUNT</div>
+  <nav class="nav">
+    <button data-page="profile">♙ &nbsp; Profile</button>
+    <button data-page="login">⇥ &nbsp; Logout</button>
+  </nav>
+  <div class="sidebar-bottom">SMOKEGUARD SYSTEM<br>Community Air Monitoring<br>Version 1.0.0</div>
+</aside>
 
-<!-- AUTHENTICATION SCREEN -->
+<main class="main">
+<header class="topbar">
+  <small>COMMUNITY MONITORING / <span id="currentPage">DASHBOARD</span></small>
+  <div class="user">● &nbsp; Administrator</div>
+</header>
 
-<section id="auth">
-<div class="auth-box">
+<div class="content">
 
-    <div class="brand">
-        <div class="logo">S</div>
-        <h1>SmokeGuard</h1>
-        <p>COMMUNITY SMOKE MONITORING</p>
+<section class="page active" id="dashboard">
+  <div class="page-title">
+    <div><h1>Dashboard Overview</h1><div class="subtitle">ภาพรวมสถานะการตรวจวัดคุณภาพอากาศ</div></div>
+    <span class="badge"><span class="dot"></span> Demo Mode</span>
+  </div>
+  <div class="grid metrics">
+    <div class="card"><div class="card-label">MQ-2 SENSOR</div><div class="metric-value">186</div><div class="metric-note">ค่าจำลอง · Analog value</div></div>
+    <div class="card"><div class="card-label">MQ-135 SENSOR</div><div class="metric-value">92</div><div class="metric-note">ค่าจำลอง · Analog value</div></div>
+    <div class="card"><div class="card-label">DEVICE STATUS</div><div class="metric-value status-warn">Offline</div><div class="metric-note">ยังไม่ได้เชื่อมต่ออุปกรณ์จริง</div></div>
+    <div class="card"><div class="card-label">ACTIVE ALERTS</div><div class="metric-value">01</div><div class="metric-note">รายการแจ้งเตือนจำลอง</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3 class="section-heading">Sensor Activity</h3>
+      <div class="subtitle">ตัวอย่างค่าการตรวจวัดย้อนหลัง</div>
+      <div class="chart">
+        <div class="bar" style="height:35%"><span>08:00</span></div>
+        <div class="bar" style="height:48%"><span>09:00</span></div>
+        <div class="bar" style="height:42%"><span>10:00</span></div>
+        <div class="bar" style="height:68%"><span>11:00</span></div>
+        <div class="bar" style="height:55%"><span>12:00</span></div>
+        <div class="bar" style="height:80%"><span>13:00</span></div>
+        <div class="bar" style="height:60%"><span>14:00</span></div>
+      </div>
+      <div class="footer-note">ข้อมูลทั้งหมดในกราฟเป็นข้อมูลตัวอย่าง ไม่ใช่ค่าจากเซนเซอร์จริง</div>
     </div>
+    <div class="card">
+      <h3 class="section-heading">Latest System Status</h3>
+      <div class="profile-row"><span>MQ-2</span><span class="status-normal">Normal</span></div>
+      <div class="profile-row"><span>MQ-135</span><span class="status-normal">Normal</span></div>
+      <div class="profile-row"><span>Connection</span><span class="status-warn">Offline</span></div>
+      <div class="profile-row"><span>Last Update</span><span>Demo data</span></div>
+    </div>
+  </div>
+</section>
 
-    <div class="card" id="loginPage">
-        <h2>Welcome Back</h2>
-        <p class="muted">เข้าสู่ระบบ SmokeGuard</p>
+<section class="page" id="monitoring">
+  <div class="page-title"><div><h1>Sensor Monitoring</h1><div class="subtitle">ติดตามค่าจากเซนเซอร์ตรวจจับก๊าซและควัน</div></div><span class="badge">Demo Data</span></div>
+  <div class="grid two">
+    <div class="card"><div class="card-label">MQ-2 SENSOR READING</div><div class="sensor-value">186 <span class="unit">ADC</span></div><span class="pill green">Normal · Demo</span><p class="footer-note">เซนเซอร์สำหรับตรวจจับก๊าซและควันบางชนิด</p></div>
+    <div class="card"><div class="card-label">MQ-135 SENSOR READING</div><div class="sensor-value">92 <span class="unit">ADC</span></div><span class="pill green">Normal · Demo</span><p class="footer-note">เซนเซอร์สำหรับตรวจวัดก๊าซหลายชนิดในอากาศ</p></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3 class="section-heading">Monitoring Information</h3>
+    <p class="subtitle">ข้อมูลที่แสดงเป็นข้อมูลจำลอง เพื่อเตรียมหน้าจอสำหรับเชื่อมต่ออุปกรณ์จริงในภายหลัง</p>
+  </div>
+</section>
 
-        <form id="loginForm">
+<section class="page" id="alerts">
+  <div class="page-title"><div><h1>Alert Center</h1><div class="subtitle">รายการแจ้งเตือนจากระบบ</div></div></div>
+  <div class="notice"><strong>⚠ ตัวอย่างการแจ้งเตือน: ค่าจากเซนเซอร์สูงกว่าระดับที่กำหนด</strong><p>อุปกรณ์จำลอง · MQ-2 / MQ-135</p><small class="subtitle">19 พฤศจิกายน 2026 · 13:30</small></div>
+  <div class="card"><h3 class="section-heading">Alert Information</h3><p class="subtitle">เมื่อเชื่อมต่อเซนเซอร์จริง ระบบจะแสดงรายการแจ้งเตือนตามข้อมูลที่ได้รับ</p></div>
+</section>
+
+<section class="page" id="history">
+  <div class="page-title"><div><h1>Monitoring History</h1><div class="subtitle">ประวัติค่าการตรวจวัดจากระบบ</div></div></div>
+  <div class="card table-wrap">
+    <table><thead><tr><th>TIME</th><th>MQ-2</th><th>MQ-135</th><th>STATUS</th><th>SOURCE</th></tr></thead>
+    <tbody>
+      <tr><td>14:00</td><td>186</td><td>92</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
+      <tr><td>13:00</td><td>245</td><td>110</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
+      <tr><td>12:00</td><td>430</td><td>175</td><td><span class="pill amber">Warning</span></td><td>Demo</td></tr>
+      <tr><td>11:00</td><td>210</td><td>98</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
+    </tbody></table>
+  </div>
+  <div class="footer-note">ประวัติทั้งหมดเป็นข้อมูลตัวอย่าง</div>
+</section>
+
+<section class="page" id="device">
+  <div class="page-title"><div><h1>Device Status</h1><div class="subtitle">สถานะการเชื่อมต่ออุปกรณ์ตรวจวัด</div></div></div>
+  <div class="card">
+    <div class="card-label">DEVICE ID</div><div class="metric-value" style="font-size:22px">SMOKEGUARD-001</div>
+    <div class="profile-row"><span>Connection Status</span><span class="status-warn">● Offline</span></div>
+    <div class="profile-row"><span>Microcontroller</span><span>Arduino UNO + ESP8266</span></div>
+    <div class="profile-row"><span>Sensors</span><span>MQ-2 / MQ-135</span></div>
+    <div class="profile-row"><span>Last Received</span><span>Not connected</span></div>
+    <div class="profile-row"><span>Data Source</span><span>Mock Data</span></div>
+  </div>
+</section>
+
+<section class="page" id="profile">
+  <div class="page-title"><div><h1>User Profile</h1><div class="subtitle">ข้อมูลบัญชีผู้ใช้งาน</div></div></div>
+  <div class="card form">
+    <div class="profile-row"><span>Username</span><span>Administrator</span></div>
+    <div class="profile-row"><span>Email</span><span>Not connected</span></div>
+    <div class="profile-row"><span>Role</span><span>System Administrator</span></div>
+    <div class="profile-row"><span>Project</span><span>SmokeGuard</span></div>
+  </div>
+</section>
+
+<section class="page" id="login">
+  <div class="page-title"><div><h1>Welcome to SmokeGuard</h1><div class="subtitle">ระบบเฝ้าระวังและแจ้งเตือนค่าควันในชุมชน</div></div></div>
+  <div class="card form">
+    <h3 class="section-heading">Sign in</h3>
+    <div class="field"><label>Email address</label><input type="email" placeholder="Enter your email"></div>
+    <div class="field"><label>Password</label><input type="password" placeholder="Enter your password"></div>
+    <button class="btn primary" id="loginButton">Sign in</button>
+    <p class="footer-note">หน้าล็อกอินนี้ยังเป็นตัวอย่าง ยังไม่ได้เชื่อมระบบบัญชี Firebase</p>
+  </div>
+</section>
+
+</div>
+</main>
+</div>
+
+<script>
+const navButtons = document.querySelectorAll('[data-page]');
+const pages = document.querySelectorAll('.page');
+const currentPage = document.getElementById('currentPage');
+
+function showPage(pageId) {
+  pages.forEach(page => page.classList.toggle('active', page.id === pageId));
+  navButtons.forEach(button => button.classList.toggle('active', button.dataset.page === pageId));
+  currentPage.textContent = pageId.toUpperCase();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+navButtons.forEach(button => {
+  button.addEventListener('click', () => showPage(button.dataset.page));
+});
+
+document.getElementById('loginButton').addEventListener('click', () => {
+  showPage('dashboard');
+});
+</script>
+</body>
+</html>
