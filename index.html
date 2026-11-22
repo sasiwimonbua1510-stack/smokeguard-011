@@ -662,6 +662,7 @@ h2{
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   
 <script>
 // =====================================
@@ -671,6 +672,7 @@ h2{
 const firebaseConfig = {
   apiKey: "AIzaSyB1EOA3A3UJmFzZp7ManNRyWgbQxIDSGg4",
   authDomain: "smokeguard-c3d84.firebaseapp.com",
+  databaseURL: "https://smokeguard-c3d84-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "smokeguard-c3d84",
   storageBucket: "smokeguard-c3d84.firebasestorage.app",
   messagingSenderId: "530279019143",
@@ -680,6 +682,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
+const rtdb = firebase.database();
+
 
 // =====================================
 // เปลี่ยนหน้า Welcome / Login / Register
@@ -902,14 +906,81 @@ async function updateProfile() {
 // ตรวจสอบสถานะการเข้าสู่ระบบ
 // =====================================
 
-auth.onAuthStateChanged(function(user) {
+  auth.onAuthStateChanged(function(user) {
   if (user) {
     showApp();
+    startSmokeGuardRealtime();
   } else {
     showScreen('welcome');
   }
 });
 
+
+// =====================================
+// REALTIME SENSOR DATA & ALERT (SmokeGuard)
+// =====================================
+
+let lastAlertStatus = null;
+let sensorListenerStarted = false;
+
+function startSmokeGuardRealtime() {
+  if (sensorListenerStarted) return;
+  sensorListenerStarted = true;
+
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+
+  rtdb.ref("SmokeGuard").on("value", function(snapshot) {
+    const data = snapshot.val();
+    if (!data) return;
+
+    const mq2 = data.MQ2 ?? "--";
+    const mq135 = data.MQ135 ?? "--";
+    const status = String(data.STATUS ?? "UNKNOWN").toUpperCase();
+
+    // อัปเดตค่าบนหน้าจอ (ถ้ามี element ตาม id เหล่านี้อยู่ใน HTML)
+    const mq2El = document.getElementById("mq2Value");
+    const mq135El = document.getElementById("mq135Value");
+    const statusEl = document.getElementById("statusValue");
+    const alertBoxEl = document.getElementById("alertBanner");
+
+    if (mq2El) mq2El.textContent = mq2;
+    if (mq135El) mq135El.textContent = mq135;
+    if (statusEl) statusEl.textContent = status;
+
+    const isDanger =
+      status.includes("DANGER") ||
+      status.includes("ALERT") ||
+      status.includes("SMOKE") ||
+      status.includes("GAS") ||
+      status.includes("เตือน") ||
+      status.includes("อันตราย");
+
+    if (alertBoxEl) {
+      alertBoxEl.style.display = isDanger ? "block" : "none";
+      alertBoxEl.textContent = isDanger
+        ? `แจ้งเตือน! สถานะ: ${status} (MQ2: ${mq2}, MQ135: ${mq135})`
+        : "";
+    }
+
+    // แจ้งเตือนเฉพาะตอนเปลี่ยนสถานะเป็นอันตราย เพื่อไม่ให้เด้งซ้ำรัวๆ
+    if (isDanger && lastAlertStatus !== status) {
+      alert(`⚠️ แจ้งเตือน SmokeGuard!\nสถานะ: ${status}\nMQ2: ${mq2} | MQ135: ${mq135}`);
+
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("⚠️ แจ้งเตือน SmokeGuard", {
+          body: `สถานะ: ${status} | MQ2: ${mq2} | MQ135: ${mq135}`
+        });
+      }
+    }
+
+    lastAlertStatus = status;
+  }, function(error) {
+    console.error("อ่านข้อมูล SmokeGuard Realtime ไม่สำเร็จ:", error);
+  });
+}
+  
 </script>
 </body>
 </html>
