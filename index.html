@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1728">
 <title>SmokeGuard</title>
+
 <style>
 :root {
   --bg:#0b1728;
@@ -18,153 +19,391 @@
   --amber:#f2b84b;
   --red:#f16d72;
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:Arial,"Noto Sans Thai",sans-serif;
 }
+
 button,input{font:inherit}
 button{cursor:pointer}
-.screen{display:none;min-height:100vh}
-.screen.active{display:block}
-.auth-screen{
+
+/* SCREEN CONTROL */
+.screen{
+  display:none;
   min-height:100vh;
+}
+
+/* หน้าทั่วไป */
+.screen.active{
+  display:block;
+}
+
+/* หน้าสำหรับ Welcome / Login / Register */
+.screen.auth-screen{
+  display:none;
+}
+
+.screen.auth-screen.active{
   display:flex;
   align-items:center;
   justify-content:center;
+}
+
+/* AUTH */
+.auth-screen{
+  min-height:100vh;
   padding:25px 18px;
   background:linear-gradient(145deg,#0b1728,#102a40);
 }
-.auth-box{width:100%;max-width:410px}
-.brand{text-align:center;margin-bottom:32px}
+
+.auth-box{
+  width:100%;
+  max-width:410px;
+  margin:auto;
+}
+
+.brand{
+  text-align:center;
+  margin-bottom:32px;
+}
+
 .logo{
-  width:64px;height:64px;border-radius:17px;
-  background:#143b50;border:1px solid #28647a;
-  color:var(--cyan);font-size:34px;
-  display:grid;place-items:center;
+  width:64px;
+  height:64px;
+  border-radius:17px;
+  background:#143b50;
+  border:1px solid #28647a;
+  color:var(--cyan);
+  font-size:34px;
+  display:grid;
+  place-items:center;
   margin:0 auto 14px;
 }
-.brand h1{font-size:27px;letter-spacing:1px;margin:0}
-.brand p{color:var(--muted);font-size:11px;letter-spacing:2px}
+
+.brand h1{
+  font-size:27px;
+  letter-spacing:1px;
+  margin:0;
+}
+
+.brand p{
+  color:var(--muted);
+  font-size:11px;
+  letter-spacing:2px;
+}
+
 .auth-card{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:15px;
   padding:25px 21px;
 }
-.auth-card h2{font-size:21px;margin:0 0 7px}
-.description{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:22px}
-.field{margin-bottom:16px}
-.field label{display:block;font-size:12px;color:#c2cfdd;margin-bottom:7px}
+
+.auth-card h2{
+  font-size:21px;
+  margin:0 0 7px;
+}
+
+.description{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  color:#c2cfdd;
+  margin-bottom:7px;
+}
+
 .field input{
-  width:100%;padding:13px;
-  background:#0b1728;color:white;
+  width:100%;
+  padding:13px;
+  background:#0b1728;
+  color:white;
   border:1px solid var(--border);
-  border-radius:8px;outline:none;
+  border-radius:8px;
+  outline:none;
 }
-.field input:focus{border-color:var(--cyan)}
+
+.field input:focus{
+  border-color:var(--cyan);
+}
+
 .primary{
-  width:100%;padding:14px;
-  border:0;border-radius:8px;
-  background:#16839d;color:white;
-  font-weight:bold;margin-top:8px;
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:8px;
+  background:#16839d;
+  color:white;
+  font-weight:bold;
+  margin-top:8px;
 }
-.primary:hover{background:#1b9bb7}
+
+.primary:hover{
+  background:#1b9bb7;
+}
+
 .secondary{
-  width:100%;padding:13px;
+  width:100%;
+  padding:13px;
   border:1px solid var(--border);
-  background:transparent;color:white;
-  border-radius:8px;margin-top:10px;
+  background:transparent;
+  color:white;
+  border-radius:8px;
+  margin-top:10px;
 }
-.auth-footer{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
-.text-button{background:none;border:0;color:var(--cyan);font-weight:bold}
-.note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px}
-.app{display:none;min-height:100vh;padding-bottom:76px}
-.app.active{display:block}
+
+.auth-footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:20px;
+}
+
+.text-button{
+  background:none;
+  border:0;
+  color:var(--cyan);
+  font-weight:bold;
+}
+
+.note{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.6;
+  margin-top:16px;
+}
+
+/* MAIN APP */
+.app{
+  display:none;
+  min-height:100vh;
+  padding-bottom:76px;
+}
+
+.app.active{
+  display:block;
+}
+
 .topbar{
   padding:17px 19px;
   border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   background:#0e1d30;
 }
-.top-brand{font-weight:bold;font-size:18px}
-.top-brand span{color:var(--cyan)}
-.demo{font-size:10px;color:var(--amber);border:1px solid #70552c;padding:6px 9px;border-radius:20px}
-.content{max-width:760px;margin:auto;padding:24px 17px}
-h2{font-size:23px;margin:0 0 7px}
-.sub{font-size:12px;color:var(--muted);line-height:1.6}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+
+.top-brand{
+  font-weight:bold;
+  font-size:18px;
+}
+
+.top-brand span{
+  color:var(--cyan);
+}
+
+.demo{
+  font-size:10px;
+  color:var(--amber);
+  border:1px solid #70552c;
+  padding:6px 9px;
+  border-radius:20px;
+}
+
+.content{
+  max-width:760px;
+  margin:auto;
+  padding:24px 17px;
+}
+
+h2{
+  font-size:23px;
+  margin:0 0 7px;
+}
+
+.sub{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:22px;
+}
+
 .card{
   background:var(--surface);
   border:1px solid var(--border);
-  border-radius:12px;padding:17px;
+  border-radius:12px;
+  padding:17px;
   min-width:0;
 }
-.card-label{font-size:11px;color:var(--muted)}
-.value{font-size:29px;font-weight:bold;margin:13px 0 7px}
-.unit{font-size:11px;color:var(--muted)}
-.status{font-size:11px;color:var(--green)}
-.section-title{font-size:15px;margin:25px 0 13px}
+
+.card-label{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.value{
+  font-size:29px;
+  font-weight:bold;
+  margin:13px 0 7px;
+}
+
+.unit{
+  font-size:11px;
+  color:var(--muted);
+}
+
+.status{
+  font-size:11px;
+  color:var(--green);
+}
+
+.section-title{
+  font-size:15px;
+  margin:25px 0 13px;
+}
+
 .info-row{
-  display:flex;justify-content:space-between;gap:10px;
-  padding:14px 0;border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
   font-size:12px;
 }
-.info-row span:first-child{color:var(--muted)}
+
+.info-row span:first-child{
+  color:var(--muted);
+}
+
 .alert-box{
   border-left:3px solid var(--amber);
   background:var(--surface);
-  border-radius:8px;padding:15px;margin-top:15px;
+  border-radius:8px;
+  padding:15px;
+  margin-top:15px;
 }
-.alert-box p{font-size:12px;color:var(--muted);line-height:1.6}
+
+.alert-box p{
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* BOTTOM NAVIGATION */
 .bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;
-  display:flex;justify-content:space-around;
-  background:#101f32;border-top:1px solid var(--border);
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  display:flex;
+  justify-content:space-around;
+  background:#101f32;
+  border-top:1px solid var(--border);
   padding:9px 3px calc(9px + env(safe-area-inset-bottom));
   z-index:10;
 }
+
 .nav-item{
-  background:none;border:0;color:var(--muted);
-  font-size:10px;min-width:0;flex:1;
-  display:flex;flex-direction:column;align-items:center;gap:5px;
+  background:none;
+  border:0;
+  color:var(--muted);
+  font-size:10px;
+  min-width:0;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
 }
-.nav-icon{font-size:19px}
-.nav-item.active{color:var(--cyan)}
-.page{display:none}
-.page.active{display:block}
+
+.nav-icon{
+  font-size:19px;
+}
+
+.nav-item.active{
+  color:var(--cyan);
+}
+
+/* APP PAGES */
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
 .logout{
-  border:1px solid var(--border);background:transparent;
-  color:var(--red);padding:11px 15px;border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--red);
+  padding:11px 15px;
+  border-radius:8px;
   margin-top:20px;
 }
+
 @media(min-width:700px){
-  .content{padding:35px 28px}
-  .cards{grid-template-columns:repeat(2,1fr)}
+  .content{
+    padding:35px 28px;
+  }
+
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 </style>
 </head>
+
 <body>
 
 <!-- WELCOME -->
-<section id="welcome" class="screen active auth-screen">
+<section id="welcome" class="screen auth-screen active">
   <div class="auth-box">
     <div class="brand">
       <div class="logo">⌁</div>
       <h1>SmokeGuard</h1>
       <p>AIR MONITORING SYSTEM</p>
     </div>
+
     <div class="auth-card">
       <h2>Welcome to SmokeGuard</h2>
+
       <p class="description">
         ระบบเฝ้าระวังและแจ้งเตือนค่าควันและก๊าซผิดปกติ
         เพื่อสนับสนุนการดูแลคุณภาพอากาศในชุมชน
       </p>
-      <button class="primary" onclick="showScreen('login')">เข้าสู่ระบบ</button>
-      <button class="secondary" onclick="showScreen('register')">สร้างบัญชีใหม่</button>
-      <p class="note">ระบบนี้อยู่ระหว่างการพัฒนา ข้อมูลในหน้าทดลองยังไม่ใช่ข้อมูลจากอุปกรณ์จริง</p>
+
+      <button class="primary" type="button" onclick="showScreen('login')">
+        เข้าสู่ระบบ
+      </button>
+
+      <button class="secondary" type="button" onclick="showScreen('register')">
+        สร้างบัญชีใหม่
+      </button>
+
+      <p class="note">
+        ระบบนี้อยู่ระหว่างการพัฒนา ข้อมูลในหน้าทดลองยังไม่ใช่ข้อมูลจากอุปกรณ์จริง
+      </p>
     </div>
   </div>
 </section>
@@ -177,36 +416,49 @@ h2{font-size:23px;margin:0 0 7px}
       <h1>SmokeGuard</h1>
       <p>CREATE YOUR ACCOUNT</p>
     </div>
+
     <div class="auth-card">
       <h2>สมัครสมาชิก</h2>
       <p class="description">สร้างบัญชีเพื่อเริ่มใช้งานระบบ SmokeGuard</p>
+
       <form id="registerForm">
         <div class="field">
           <label>ชื่อ-นามสกุล</label>
           <input id="fullname" type="text" placeholder="กรอกชื่อ-นามสกุล" required>
         </div>
+
         <div class="field">
           <label>อีเมล</label>
           <input id="regEmail" type="email" placeholder="example@email.com" required>
         </div>
+
         <div class="field">
           <label>เบอร์โทรศัพท์สำหรับแจ้งเตือนฉุกเฉิน</label>
           <input id="phone" type="tel" placeholder="08XXXXXXXX" required>
         </div>
+
         <div class="field">
           <label>รหัสผ่าน</label>
           <input id="regPassword" type="password" minlength="8" placeholder="อย่างน้อย 8 ตัวอักษร" required>
         </div>
+
         <div class="field">
           <label>ยืนยันรหัสผ่าน</label>
           <input id="confirmPassword" type="password" minlength="8" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
         </div>
+
         <button class="primary" type="submit">สมัครสมาชิก</button>
       </form>
-      <p class="note">การยืนยันอีเมลและ OTP ทาง SMS จะเปิดใช้งานหลังเชื่อมต่อ Firebase และผู้ให้บริการ SMS</p>
+
+      <p class="note">
+        การยืนยันอีเมลและ OTP ทาง SMS จะเปิดใช้งานหลังเชื่อมต่อ Firebase และผู้ให้บริการ SMS
+      </p>
+
       <div class="auth-footer">
         มีบัญชีอยู่แล้ว?
-        <button class="text-button" onclick="showScreen('login')">เข้าสู่ระบบ</button>
+        <button class="text-button" type="button" onclick="showScreen('login')">
+          เข้าสู่ระบบ
+        </button>
       </div>
     </div>
   </div>
@@ -220,31 +472,42 @@ h2{font-size:23px;margin:0 0 7px}
       <h1>SmokeGuard</h1>
       <p>SECURE SIGN IN</p>
     </div>
+
     <div class="auth-card">
       <h2>เข้าสู่ระบบ</h2>
       <p class="description">กรอกอีเมลและรหัสผ่านเพื่อเข้าใช้งาน</p>
+
       <form id="loginForm">
         <div class="field">
           <label>อีเมล</label>
           <input id="loginEmail" type="email" placeholder="example@email.com" required>
         </div>
+
         <div class="field">
           <label>รหัสผ่าน</label>
           <input id="loginPassword" type="password" placeholder="กรอกรหัสผ่าน" required>
         </div>
+
         <button class="primary" type="submit">เข้าสู่ระบบ</button>
       </form>
+
       <div class="auth-footer">
         ยังไม่มีบัญชี?
-        <button class="text-button" onclick="showScreen('register')">สมัครสมาชิก</button>
+        <button class="text-button" type="button" onclick="showScreen('register')">
+          สมัครสมาชิก
+        </button>
       </div>
-      <p class="note">ระบบเข้าสู่ระบบจริงจะเชื่อม Firebase Authentication ในขั้นตอนถัดไป</p>
+
+      <p class="note">
+        ระบบเข้าสู่ระบบจริงจะเชื่อม Firebase Authentication ในขั้นตอนถัดไป
+      </p>
     </div>
   </div>
 </section>
 
 <!-- MAIN APP -->
 <div id="mainApp" class="app">
+
   <header class="topbar">
     <div class="top-brand">⌁ <span>Smoke</span>Guard</div>
     <div class="demo">● DEMO MODE</div>
@@ -252,32 +515,39 @@ h2{font-size:23px;margin:0 0 7px}
 
   <main class="content">
 
+    <!-- DASHBOARD -->
     <section id="dashboard" class="page active">
       <h2>Dashboard</h2>
       <p class="sub">ภาพรวมการตรวจวัดคุณภาพอากาศในชุมชน</p>
+
       <div class="cards">
         <div class="card">
           <div class="card-label">MQ-2 SENSOR</div>
           <div class="value">186</div>
           <div class="status">● Normal · Demo</div>
         </div>
+
         <div class="card">
           <div class="card-label">MQ-135 SENSOR</div>
           <div class="value">92</div>
           <div class="status">● Normal · Demo</div>
         </div>
+
         <div class="card">
           <div class="card-label">DEVICE STATUS</div>
           <div class="value" style="color:var(--amber)">Offline</div>
           <div class="sub">ยังไม่ได้เชื่อมต่ออุปกรณ์จริง</div>
         </div>
+
         <div class="card">
           <div class="card-label">ACTIVE ALERTS</div>
           <div class="value">01</div>
           <div class="sub">ข้อมูลตัวอย่าง</div>
         </div>
       </div>
+
       <h3 class="section-title">สถานะระบบล่าสุด</h3>
+
       <div class="card">
         <div class="info-row"><span>MQ-2</span><span class="status">Normal</span></div>
         <div class="info-row"><span>MQ-135</span><span class="status">Normal</span></div>
@@ -285,27 +555,35 @@ h2{font-size:23px;margin:0 0 7px}
       </div>
     </section>
 
+    <!-- MONITORING -->
     <section id="monitoring" class="page">
       <h2>Monitoring</h2>
       <p class="sub">รายละเอียดค่าที่ได้รับจากเซนเซอร์</p>
+
       <div class="cards">
         <div class="card">
           <div class="card-label">MQ-2</div>
           <div class="value">186 <span class="unit">ADC</span></div>
           <div class="status">Normal · Demo</div>
         </div>
+
         <div class="card">
           <div class="card-label">MQ-135</div>
           <div class="value">92 <span class="unit">ADC</span></div>
           <div class="status">Normal · Demo</div>
         </div>
       </div>
-      <p class="sub" style="margin-top:18px">ค่าที่แสดงเป็นข้อมูลจำลอง ไม่ใช่ค่าตรวจวัดจริง</p>
+
+      <p class="sub" style="margin-top:18px">
+        ค่าที่แสดงเป็นข้อมูลจำลอง ไม่ใช่ค่าตรวจวัดจริง
+      </p>
     </section>
 
+    <!-- ALERTS -->
     <section id="alerts" class="page">
       <h2>Alert Center</h2>
       <p class="sub">ศูนย์รวมการแจ้งเตือนจากระบบ</p>
+
       <div class="alert-box">
         <strong>⚠ ตัวอย่างค่าจากเซนเซอร์สูงกว่าระดับที่กำหนด</strong>
         <p>รายการแจ้งเตือนจำลอง · MQ-2 / MQ-135</p>
@@ -313,9 +591,11 @@ h2{font-size:23px;margin:0 0 7px}
       </div>
     </section>
 
+    <!-- HISTORY -->
     <section id="history" class="page">
       <h2>History</h2>
       <p class="sub">ประวัติการตรวจวัดตัวอย่าง</p>
+
       <div class="card">
         <div class="info-row"><span>14:00 · MQ-2 186</span><span class="status">Normal</span></div>
         <div class="info-row"><span>13:00 · MQ-2 245</span><span class="status">Normal</span></div>
@@ -324,9 +604,11 @@ h2{font-size:23px;margin:0 0 7px}
       </div>
     </section>
 
+    <!-- DEVICE -->
     <section id="device" class="page">
       <h2>Device Status</h2>
       <p class="sub">สถานะการเชื่อมต่ออุปกรณ์</p>
+
       <div class="card">
         <div class="info-row"><span>Device ID</span><span>SMOKEGUARD-001</span></div>
         <div class="info-row"><span>Connection</span><span style="color:var(--amber)">Offline</span></div>
@@ -336,64 +618,104 @@ h2{font-size:23px;margin:0 0 7px}
       </div>
     </section>
 
+    <!-- PROFILE -->
     <section id="profile" class="page">
       <h2>Profile</h2>
       <p class="sub">ข้อมูลบัญชีผู้ใช้งาน</p>
+
       <div class="card">
         <div class="info-row"><span>ชื่อ</span><span id="profileName">ผู้ใช้งาน</span></div>
         <div class="info-row"><span>อีเมล</span><span id="profileEmail">-</span></div>
         <div class="info-row"><span>เบอร์โทรศัพท์</span><span id="profilePhone">-</span></div>
         <div class="info-row"><span>สถานะ OTP</span><span style="color:var(--amber)">ยังไม่ยืนยัน</span></div>
       </div>
+
       <button class="logout" id="logoutButton">ออกจากระบบ</button>
     </section>
 
   </main>
 
   <nav class="bottom-nav">
-    <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span>หน้าหลัก</button>
-    <button class="nav-item" data-page="monitoring"><span class="nav-icon">◉</span>ตรวจวัด</button>
-    <button class="nav-item" data-page="alerts"><span class="nav-icon">⚑</span>แจ้งเตือน</button>
-    <button class="nav-item" data-page="history"><span class="nav-icon">▤</span>ประวัติ</button>
-    <button class="nav-item" data-page="profile"><span class="nav-icon">♙</span>โปรไฟล์</button>
+    <button class="nav-item active" data-page="dashboard" type="button">
+      <span class="nav-icon">▦</span>หน้าหลัก
+    </button>
+
+    <button class="nav-item" data-page="monitoring" type="button">
+      <span class="nav-icon">◉</span>ตรวจวัด
+    </button>
+
+    <button class="nav-item" data-page="alerts" type="button">
+      <span class="nav-icon">⚑</span>แจ้งเตือน
+    </button>
+
+    <button class="nav-item" data-page="history" type="button">
+      <span class="nav-icon">▤</span>ประวัติ
+    </button>
+
+    <button class="nav-item" data-page="profile" type="button">
+      <span class="nav-icon">♙</span>โปรไฟล์
+    </button>
   </nav>
+
 </div>
 
 <script>
+/* เปลี่ยนหน้า Welcome / Login / Register */
 function showScreen(id){
-  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
-  document.getElementById('mainApp').classList.remove('active');
-  document.getElementById(id).classList.add('active');
-}
-
-function showPage(id){
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(btn=>{
-    btn.classList.toggle('active',btn.dataset.page===id);
+  document.querySelectorAll('.screen').forEach(function(el){
+    el.classList.remove('active');
   });
+
+  document.getElementById('mainApp').classList.remove('active');
+
+  const target = document.getElementById(id);
+
+  if(target){
+    target.classList.add('active');
+  }
+
   window.scrollTo(0,0);
 }
 
-document.querySelectorAll('.nav-item').forEach(btn=>{
-  btn.addEventListener('click',()=>showPage(btn.dataset.page));
+/* เปลี่ยนหน้าเมนูหลัก */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(el){
+    el.classList.remove('active');
+  });
+
+  const target = document.getElementById(id);
+
+  if(target){
+    target.classList.add('active');
+  }
+
+  document.querySelectorAll('.nav-item').forEach(function(btn){
+    btn.classList.toggle('active',btn.dataset.page===id);
+  });
+
+  window.scrollTo(0,0);
+}
+
+/* ปุ่มเมนูด้านล่าง */
+document.querySelectorAll('.nav-item').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    showPage(btn.dataset.page);
+  });
 });
 
+/* สมัครสมาชิก DEMO */
 document.getElementById('registerForm').addEventListener('submit',function(e){
   e.preventDefault();
 
-  const name=document.getElementById('fullname').value.trim();
-  const email=document.getElementById('regEmail').value.trim();
-  const phone=document.getElementById('phone').value.trim();
-  const password=document.getElementById('regPassword').value;
-  const confirm=document.getElementById('confirmPassword').value;
+  const password = document.getElementById('regPassword').value;
+  const confirm = document.getElementById('confirmPassword').value;
 
-  if(password!==confirm){
+  if(password !== confirm){
     alert('รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน');
     return;
   }
 
-  if(password.length<8){
+  if(password.length < 8){
     alert('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
     return;
   }
@@ -401,15 +723,18 @@ document.getElementById('registerForm').addEventListener('submit',function(e){
   alert('หน้าสมัครสมาชิกทดลองเท่านั้น ยังไม่ได้บันทึกบัญชีจริง กรุณารอการเชื่อมต่อระบบ Firebase');
 });
 
+/* เข้าสู่ระบบ DEMO */
 document.getElementById('loginForm').addEventListener('submit',function(e){
   e.preventDefault();
+
   alert('ระบบ Login ยังไม่ได้เชื่อม Firebase Authentication จึงยังไม่สามารถเข้าสู่ระบบจริงได้');
 });
 
+/* ออกจากระบบ */
 document.getElementById('logoutButton').addEventListener('click',function(){
   showScreen('welcome');
 });
-
 </script>
+
 </body>
 </html>
