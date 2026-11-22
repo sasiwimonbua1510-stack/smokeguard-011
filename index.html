@@ -658,11 +658,34 @@ h2{
   </nav>
 
 </div>
-
+  
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  
 <script>
-/* เปลี่ยนหน้า Welcome / Login / Register */
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(function(el){
+// =====================================
+// FIREBASE CONFIGURATION
+// =====================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1EOA3A3UJfZp7ManNRyWgbQxIDSGg4",
+  authDomain: "smokeguard-c3d84.firebaseapp.com",
+  projectId: "smokeguard-c3d84",
+  storageBucket: "smokeguard-c3d84.firebasestorage.app",
+  messagingSenderId: "530279019143",
+  appId: "1:530279019143:web:86e210ad69760e851d3e22"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+
+// =====================================
+// เปลี่ยนหน้า Welcome / Login / Register
+// =====================================
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(el) {
     el.classList.remove('active');
   });
 
@@ -670,71 +693,209 @@ function showScreen(id){
 
   const target = document.getElementById(id);
 
-  if(target){
+  if (target) {
     target.classList.add('active');
   }
 
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
-/* เปลี่ยนหน้าเมนูหลัก */
-function showPage(id){
-  document.querySelectorAll('.page').forEach(function(el){
+
+// =====================================
+// เปิดหน้าเมนูหลัก
+// =====================================
+
+function showApp() {
+  document.querySelectorAll('.screen').forEach(function(el) {
+    el.classList.remove('active');
+  });
+
+  document.getElementById('mainApp').classList.add('active');
+
+  showPage('dashboard');
+  updateProfile();
+
+  window.scrollTo(0, 0);
+}
+
+
+// =====================================
+// เปลี่ยนหน้าเมนูหลัก
+// =====================================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(el) {
     el.classList.remove('active');
   });
 
   const target = document.getElementById(id);
 
-  if(target){
+  if (target) {
     target.classList.add('active');
   }
 
-  document.querySelectorAll('.nav-item').forEach(function(btn){
-    btn.classList.toggle('active',btn.dataset.page===id);
+  document.querySelectorAll('.nav-item').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.page === id);
   });
 
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
-/* ปุ่มเมนูด้านล่าง */
-document.querySelectorAll('.nav-item').forEach(function(btn){
-  btn.addEventListener('click',function(){
+
+// =====================================
+// ปุ่มเมนูด้านล่าง
+// =====================================
+
+document.querySelectorAll('.nav-item').forEach(function(btn) {
+  btn.addEventListener('click', function() {
     showPage(btn.dataset.page);
   });
 });
 
-/* สมัครสมาชิก DEMO */
-document.getElementById('registerForm').addEventListener('submit',function(e){
+
+// =====================================
+// สมัครสมาชิกจริงด้วย Firebase
+// =====================================
+
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
+  const fullname = document.getElementById('fullname').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('phone').value.trim();
   const password = document.getElementById('regPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
 
-  if(password !== confirm){
+  if (!fullname || !email || !phone || !password || !confirm) {
+    alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+    return;
+  }
+
+  if (password !== confirm) {
     alert('รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน');
     return;
   }
 
-  if(password.length < 8){
+  if (password.length < 8) {
     alert('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
     return;
   }
 
-  alert('หน้าสมัครสมาชิกทดลองเท่านั้น ยังไม่ได้บันทึกบัญชีจริง กรุณารอการเชื่อมต่อระบบ Firebase');
+  try {
+    const result = await auth.createUserWithEmailAndPassword(email, password);
+
+    await result.user.updateProfile({
+      displayName: fullname
+    });
+
+    alert('สมัครสมาชิกสำเร็จ!');
+
+    showApp();
+
+  } catch (error) {
+    console.error(error);
+
+    if (error.code === 'auth/email-already-in-use') {
+      alert('อีเมลนี้มีบัญชีอยู่แล้ว');
+    } else if (error.code === 'auth/invalid-email') {
+      alert('รูปแบบอีเมลไม่ถูกต้อง');
+    } else if (error.code === 'auth/weak-password') {
+      alert('รหัสผ่านไม่ปลอดภัยเพียงพอ');
+    } else {
+      alert('สมัครสมาชิกไม่สำเร็จ: ' + error.message);
+    }
+  }
 });
 
-/* เข้าสู่ระบบ DEMO */
-document.getElementById('loginForm').addEventListener('submit',function(e){
+
+// =====================================
+// เข้าสู่ระบบจริงด้วย Firebase
+// =====================================
+
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
   e.preventDefault();
 
-  alert('ระบบ Login ยังไม่ได้เชื่อม Firebase Authentication จึงยังไม่สามารถเข้าสู่ระบบจริงได้');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  try {
+    await auth.signInWithEmailAndPassword(email, password);
+
+    alert('เข้าสู่ระบบสำเร็จ');
+
+    showApp();
+
+  } catch (error) {
+    console.error(error);
+
+    if (
+      error.code === 'auth/invalid-credential' ||
+      error.code === 'auth/wrong-password' ||
+      error.code === 'auth/user-not-found'
+    ) {
+      alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+    } else if (error.code === 'auth/invalid-email') {
+      alert('รูปแบบอีเมลไม่ถูกต้อง');
+    } else {
+      alert('เข้าสู่ระบบไม่สำเร็จ: ' + error.message);
+    }
+  }
 });
 
-/* ออกจากระบบ */
-document.getElementById('logoutButton').addEventListener('click',function(){
-  showScreen('welcome');
+
+// =====================================
+// แสดงข้อมูลผู้ใช้ในหน้า Profile
+// =====================================
+
+function updateProfile() {
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  const nameElement = document.getElementById('profileName');
+  const emailElement = document.getElementById('profileEmail');
+
+  if (nameElement) {
+    nameElement.textContent = user.displayName || 'ผู้ใช้งาน SmokeGuard';
+  }
+
+  if (emailElement) {
+    emailElement.textContent = user.email || '-';
+  }
+}
+
+
+// =====================================
+// ออกจากระบบ
+// =====================================
+
+document.getElementById('logoutButton').addEventListener('click', async function() {
+  try {
+    await auth.signOut();
+
+    alert('ออกจากระบบเรียบร้อยแล้ว');
+
+    showScreen('welcome');
+
+  } catch (error) {
+    alert('ออกจากระบบไม่สำเร็จ');
+    console.error(error);
+  }
 });
+
+
+// =====================================
+// ตรวจสอบสถานะการเข้าสู่ระบบ
+// =====================================
+
+auth.onAuthStateChanged(function(user) {
+  if (user) {
+    showApp();
+  } else {
+    showScreen('welcome');
+  }
+});
+
 </script>
-
 </body>
 </html>
