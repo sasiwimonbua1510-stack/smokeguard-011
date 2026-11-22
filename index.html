@@ -935,9 +935,9 @@ function startSmokeGuardRealtime() {
     const data = snapshot.val();
     if (!data) return;
 
-    const mq2 = data.MQ2 ?? "--";
-    const mq135 = data.MQ135 ?? "--";
-    const status = String(data.STATUS ?? "NORMAL").toUpperCase();
+    const mq2 = data.mq2 ?? data.MQ2 ?? "--";
+const mq135 = data.mq135 ?? data.MQ135 ?? "--";
+const status = String(data.status ?? data.STATUS ?? "NORMAL").toUpperCase();
 
     const isDanger =
       status.includes("DANGER") ||
