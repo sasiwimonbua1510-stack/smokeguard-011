@@ -2,254 +2,414 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmokeGuard | Air Monitoring System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1728">
+<title>SmokeGuard</title>
 <style>
 :root {
-  --bg:#0b1220; --panel:#111c2e; --panel2:#172438;
-  --line:#26364d; --text:#e8eef7; --muted:#91a2b9;
-  --cyan:#36c5df; --green:#32c48d; --amber:#f3b94f;
-  --red:#f06b70;
+  --bg:#0b1728;
+  --surface:#122238;
+  --surface2:#192d45;
+  --border:#2a4059;
+  --text:#f1f5f9;
+  --muted:#9aacc1;
+  --cyan:#36c5df;
+  --green:#39c98e;
+  --amber:#f2b84b;
+  --red:#f16d72;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Thai",sans-serif}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,"Noto Sans Thai",sans-serif;
+}
 button,input{font:inherit}
 button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{width:245px;background:#0e1929;border-right:1px solid var(--line);padding:25px 16px;flex-shrink:0}
-.brand{display:flex;align-items:center;gap:12px;padding:5px 9px 28px}
-.logo{width:40px;height:40px;background:#12384a;border:1px solid #246078;border-radius:10px;display:grid;place-items:center;color:var(--cyan);font-size:23px}
-.brand strong{font-size:19px;letter-spacing:.4px}
-.brand small{display:block;color:var(--muted);font-size:10px;margin-top:4px;letter-spacing:1px}
-.nav-label{font-size:10px;color:#71839b;letter-spacing:1.5px;padding:14px 12px 9px}
-.nav button{width:100%;border:0;background:transparent;color:#aebdd0;text-align:left;padding:12px;border-radius:8px;margin:3px 0;font-size:14px}
-.nav button:hover,.nav button.active{background:#193047;color:#fff}
-.nav button.active{border-left:3px solid var(--cyan)}
-.sidebar-bottom{margin-top:35px;border-top:1px solid var(--line);padding:18px 10px;color:var(--muted);font-size:12px;line-height:1.8}
-.main{flex:1;min-width:0}
-.topbar{height:68px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;background:#0d1726}
-.topbar small{color:var(--muted)}
-.user{font-size:13px;color:#c7d3e2}
-.content{padding:30px;max-width:1400px;margin:auto}
-.page-title{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:24px}
-h1{font-size:25px;margin:0 0 7px}
-.subtitle{font-size:13px;color:var(--muted)}
-.badge{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:20px;font-size:11px;background:#183b35;color:var(--green)}
-.dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.grid{display:grid;gap:16px}
-.metrics{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:19px;min-width:0}
-.card-label{font-size:12px;color:var(--muted)}
-.metric-value{font-size:29px;font-weight:700;margin:13px 0 7px}
-.metric-note{font-size:11px;color:var(--muted)}
-.two{grid-template-columns:1.5fr 1fr}
-.three{grid-template-columns:repeat(3,minmax(0,1fr))}
-.section-heading{font-size:15px;font-weight:600;margin:0 0 17px}
-.sensor-value{font-size:31px;font-weight:700;margin:8px 0}
-.unit{font-size:12px;color:var(--muted)}
-.status-normal{color:var(--green)}
-.status-warn{color:var(--amber)}
-.status-danger{color:var(--red)}
-.chart{height:190px;display:flex;align-items:end;gap:10px;padding:15px 5px 24px;border-bottom:1px solid var(--line);position:relative}
-.bar{flex:1;background:linear-gradient(180deg,#36c5df,#17627b);border-radius:4px 4px 0 0;min-width:7px;position:relative}
-.bar span{position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--muted)}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
-th,td{text-align:left;padding:14px 10px;border-bottom:1px solid var(--line)}
-th{color:var(--muted);font-weight:500}
-td{color:#d7e1ed}
-.pill{padding:5px 9px;border-radius:20px;font-size:10px}
-.pill.green{background:#153c32;color:var(--green)}
-.pill.amber{background:#46351b;color:var(--amber)}
-.pill.red{background:#48252c;color:var(--red)}
-.notice{padding:15px;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:8px;margin-bottom:12px;background:var(--panel2)}
-.notice strong{font-size:13px}
-.notice p{font-size:12px;color:var(--muted);margin:7px 0}
-.btn{border:1px solid var(--line);background:#193047;color:#eaf6ff;padding:10px 14px;border-radius:7px;font-size:12px}
-.btn.primary{background:#147d98;border-color:#147d98}
-.form{max-width:480px}
-.field{margin:16px 0}
-.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}
-.field input{width:100%;padding:12px;background:#0c1726;border:1px solid var(--line);border-radius:7px;color:white;outline:none}
-.field input:focus{border-color:var(--cyan)}
-.profile-row{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);font-size:13px}
-.profile-row span:first-child{color:var(--muted)}
-.page{display:none}.page.active{display:block}
-.mobile-menu{display:none}
-.footer-note{color:var(--muted);font-size:11px;margin-top:18px}
-@media(max-width:900px){
- .sidebar{width:205px}.metrics{grid-template-columns:repeat(2,1fr)}
- .two{grid-template-columns:1fr}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+.auth-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px 18px;
+  background:linear-gradient(145deg,#0b1728,#102a40);
 }
-@media(max-width:620px){
- .app{display:block}.sidebar{width:100%;padding:12px;border-right:0;border-bottom:1px solid var(--line)}
- .brand{padding:4px 7px 12px}.brand small{display:none}
- .nav-label,.sidebar-bottom{display:none}
- .nav{display:flex;overflow-x:auto;gap:5px}
- .nav button{white-space:nowrap;width:auto;padding:10px;font-size:12px}
- .topbar{height:50px;padding:0 15px}
- .content{padding:20px 14px}
- .metrics,.three{grid-template-columns:1fr 1fr}
- h1{font-size:21px}
- .metric-value{font-size:24px}
+.auth-box{width:100%;max-width:410px}
+.brand{text-align:center;margin-bottom:32px}
+.logo{
+  width:64px;height:64px;border-radius:17px;
+  background:#143b50;border:1px solid #28647a;
+  color:var(--cyan);font-size:34px;
+  display:grid;place-items:center;
+  margin:0 auto 14px;
+}
+.brand h1{font-size:27px;letter-spacing:1px;margin:0}
+.brand p{color:var(--muted);font-size:11px;letter-spacing:2px}
+.auth-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:25px 21px;
+}
+.auth-card h2{font-size:21px;margin:0 0 7px}
+.description{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;color:#c2cfdd;margin-bottom:7px}
+.field input{
+  width:100%;padding:13px;
+  background:#0b1728;color:white;
+  border:1px solid var(--border);
+  border-radius:8px;outline:none;
+}
+.field input:focus{border-color:var(--cyan)}
+.primary{
+  width:100%;padding:14px;
+  border:0;border-radius:8px;
+  background:#16839d;color:white;
+  font-weight:bold;margin-top:8px;
+}
+.primary:hover{background:#1b9bb7}
+.secondary{
+  width:100%;padding:13px;
+  border:1px solid var(--border);
+  background:transparent;color:white;
+  border-radius:8px;margin-top:10px;
+}
+.auth-footer{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
+.text-button{background:none;border:0;color:var(--cyan);font-weight:bold}
+.note{font-size:11px;color:var(--muted);line-height:1.6;margin-top:16px}
+.app{display:none;min-height:100vh;padding-bottom:76px}
+.app.active{display:block}
+.topbar{
+  padding:17px 19px;
+  border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:#0e1d30;
+}
+.top-brand{font-weight:bold;font-size:18px}
+.top-brand span{color:var(--cyan)}
+.demo{font-size:10px;color:var(--amber);border:1px solid #70552c;padding:6px 9px;border-radius:20px}
+.content{max-width:760px;margin:auto;padding:24px 17px}
+h2{font-size:23px;margin:0 0 7px}
+.sub{font-size:12px;color:var(--muted);line-height:1.6}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;padding:17px;
+  min-width:0;
+}
+.card-label{font-size:11px;color:var(--muted)}
+.value{font-size:29px;font-weight:bold;margin:13px 0 7px}
+.unit{font-size:11px;color:var(--muted)}
+.status{font-size:11px;color:var(--green)}
+.section-title{font-size:15px;margin:25px 0 13px}
+.info-row{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:14px 0;border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+.info-row span:first-child{color:var(--muted)}
+.alert-box{
+  border-left:3px solid var(--amber);
+  background:var(--surface);
+  border-radius:8px;padding:15px;margin-top:15px;
+}
+.alert-box p{font-size:12px;color:var(--muted);line-height:1.6}
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  display:flex;justify-content:space-around;
+  background:#101f32;border-top:1px solid var(--border);
+  padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+  z-index:10;
+}
+.nav-item{
+  background:none;border:0;color:var(--muted);
+  font-size:10px;min-width:0;flex:1;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+.nav-icon{font-size:19px}
+.nav-item.active{color:var(--cyan)}
+.page{display:none}
+.page.active{display:block}
+.logout{
+  border:1px solid var(--border);background:transparent;
+  color:var(--red);padding:11px 15px;border-radius:8px;
+  margin-top:20px;
+}
+@media(min-width:700px){
+  .content{padding:35px 28px}
+  .cards{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
-<div class="app">
-<aside class="sidebar">
-  <div class="brand">
-    <div class="logo">⌁</div>
-    <div><strong>SmokeGuard</strong><small>AIR MONITORING SYSTEM</small></div>
-  </div>
-  <div class="nav-label">MAIN MENU</div>
-  <nav class="nav">
-    <button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
-    <button data-page="monitoring">◉ &nbsp; Monitoring</button>
-    <button data-page="alerts">⚑ &nbsp; Alert Center</button>
-    <button data-page="history">▤ &nbsp; History</button>
-    <button data-page="device">▣ &nbsp; Device Status</button>
-  </nav>
-  <div class="nav-label">ACCOUNT</div>
-  <nav class="nav">
-    <button data-page="profile">♙ &nbsp; Profile</button>
-    <button data-page="login">⇥ &nbsp; Logout</button>
-  </nav>
-  <div class="sidebar-bottom">SMOKEGUARD SYSTEM<br>Community Air Monitoring<br>Version 1.0.0</div>
-</aside>
 
-<main class="main">
-<header class="topbar">
-  <small>COMMUNITY MONITORING / <span id="currentPage">DASHBOARD</span></small>
-  <div class="user">● &nbsp; Administrator</div>
-</header>
-
-<div class="content">
-
-<section class="page active" id="dashboard">
-  <div class="page-title">
-    <div><h1>Dashboard Overview</h1><div class="subtitle">ภาพรวมสถานะการตรวจวัดคุณภาพอากาศ</div></div>
-    <span class="badge"><span class="dot"></span> Demo Mode</span>
+<!-- WELCOME -->
+<section id="welcome" class="screen active auth-screen">
+  <div class="auth-box">
+    <div class="brand">
+      <div class="logo">⌁</div>
+      <h1>SmokeGuard</h1>
+      <p>AIR MONITORING SYSTEM</p>
+    </div>
+    <div class="auth-card">
+      <h2>Welcome to SmokeGuard</h2>
+      <p class="description">
+        ระบบเฝ้าระวังและแจ้งเตือนค่าควันและก๊าซผิดปกติ
+        เพื่อสนับสนุนการดูแลคุณภาพอากาศในชุมชน
+      </p>
+      <button class="primary" onclick="showScreen('login')">เข้าสู่ระบบ</button>
+      <button class="secondary" onclick="showScreen('register')">สร้างบัญชีใหม่</button>
+      <p class="note">ระบบนี้อยู่ระหว่างการพัฒนา ข้อมูลในหน้าทดลองยังไม่ใช่ข้อมูลจากอุปกรณ์จริง</p>
+    </div>
   </div>
-  <div class="grid metrics">
-    <div class="card"><div class="card-label">MQ-2 SENSOR</div><div class="metric-value">186</div><div class="metric-note">ค่าจำลอง · Analog value</div></div>
-    <div class="card"><div class="card-label">MQ-135 SENSOR</div><div class="metric-value">92</div><div class="metric-note">ค่าจำลอง · Analog value</div></div>
-    <div class="card"><div class="card-label">DEVICE STATUS</div><div class="metric-value status-warn">Offline</div><div class="metric-note">ยังไม่ได้เชื่อมต่ออุปกรณ์จริง</div></div>
-    <div class="card"><div class="card-label">ACTIVE ALERTS</div><div class="metric-value">01</div><div class="metric-note">รายการแจ้งเตือนจำลอง</div></div>
-  </div>
-  <div class="grid two">
-    <div class="card">
-      <h3 class="section-heading">Sensor Activity</h3>
-      <div class="subtitle">ตัวอย่างค่าการตรวจวัดย้อนหลัง</div>
-      <div class="chart">
-        <div class="bar" style="height:35%"><span>08:00</span></div>
-        <div class="bar" style="height:48%"><span>09:00</span></div>
-        <div class="bar" style="height:42%"><span>10:00</span></div>
-        <div class="bar" style="height:68%"><span>11:00</span></div>
-        <div class="bar" style="height:55%"><span>12:00</span></div>
-        <div class="bar" style="height:80%"><span>13:00</span></div>
-        <div class="bar" style="height:60%"><span>14:00</span></div>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="screen auth-screen">
+  <div class="auth-box">
+    <div class="brand">
+      <div class="logo">⌁</div>
+      <h1>SmokeGuard</h1>
+      <p>CREATE YOUR ACCOUNT</p>
+    </div>
+    <div class="auth-card">
+      <h2>สมัครสมาชิก</h2>
+      <p class="description">สร้างบัญชีเพื่อเริ่มใช้งานระบบ SmokeGuard</p>
+      <form id="registerForm">
+        <div class="field">
+          <label>ชื่อ-นามสกุล</label>
+          <input id="fullname" type="text" placeholder="กรอกชื่อ-นามสกุล" required>
+        </div>
+        <div class="field">
+          <label>อีเมล</label>
+          <input id="regEmail" type="email" placeholder="example@email.com" required>
+        </div>
+        <div class="field">
+          <label>เบอร์โทรศัพท์สำหรับแจ้งเตือนฉุกเฉิน</label>
+          <input id="phone" type="tel" placeholder="08XXXXXXXX" required>
+        </div>
+        <div class="field">
+          <label>รหัสผ่าน</label>
+          <input id="regPassword" type="password" minlength="8" placeholder="อย่างน้อย 8 ตัวอักษร" required>
+        </div>
+        <div class="field">
+          <label>ยืนยันรหัสผ่าน</label>
+          <input id="confirmPassword" type="password" minlength="8" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+        </div>
+        <button class="primary" type="submit">สมัครสมาชิก</button>
+      </form>
+      <p class="note">การยืนยันอีเมลและ OTP ทาง SMS จะเปิดใช้งานหลังเชื่อมต่อ Firebase และผู้ให้บริการ SMS</p>
+      <div class="auth-footer">
+        มีบัญชีอยู่แล้ว?
+        <button class="text-button" onclick="showScreen('login')">เข้าสู่ระบบ</button>
       </div>
-      <div class="footer-note">ข้อมูลทั้งหมดในกราฟเป็นข้อมูลตัวอย่าง ไม่ใช่ค่าจากเซนเซอร์จริง</div>
-    </div>
-    <div class="card">
-      <h3 class="section-heading">Latest System Status</h3>
-      <div class="profile-row"><span>MQ-2</span><span class="status-normal">Normal</span></div>
-      <div class="profile-row"><span>MQ-135</span><span class="status-normal">Normal</span></div>
-      <div class="profile-row"><span>Connection</span><span class="status-warn">Offline</span></div>
-      <div class="profile-row"><span>Last Update</span><span>Demo data</span></div>
     </div>
   </div>
 </section>
 
-<section class="page" id="monitoring">
-  <div class="page-title"><div><h1>Sensor Monitoring</h1><div class="subtitle">ติดตามค่าจากเซนเซอร์ตรวจจับก๊าซและควัน</div></div><span class="badge">Demo Data</span></div>
-  <div class="grid two">
-    <div class="card"><div class="card-label">MQ-2 SENSOR READING</div><div class="sensor-value">186 <span class="unit">ADC</span></div><span class="pill green">Normal · Demo</span><p class="footer-note">เซนเซอร์สำหรับตรวจจับก๊าซและควันบางชนิด</p></div>
-    <div class="card"><div class="card-label">MQ-135 SENSOR READING</div><div class="sensor-value">92 <span class="unit">ADC</span></div><span class="pill green">Normal · Demo</span><p class="footer-note">เซนเซอร์สำหรับตรวจวัดก๊าซหลายชนิดในอากาศ</p></div>
-  </div>
-  <div class="card" style="margin-top:16px">
-    <h3 class="section-heading">Monitoring Information</h3>
-    <p class="subtitle">ข้อมูลที่แสดงเป็นข้อมูลจำลอง เพื่อเตรียมหน้าจอสำหรับเชื่อมต่ออุปกรณ์จริงในภายหลัง</p>
-  </div>
-</section>
-
-<section class="page" id="alerts">
-  <div class="page-title"><div><h1>Alert Center</h1><div class="subtitle">รายการแจ้งเตือนจากระบบ</div></div></div>
-  <div class="notice"><strong>⚠ ตัวอย่างการแจ้งเตือน: ค่าจากเซนเซอร์สูงกว่าระดับที่กำหนด</strong><p>อุปกรณ์จำลอง · MQ-2 / MQ-135</p><small class="subtitle">19 พฤศจิกายน 2026 · 13:30</small></div>
-  <div class="card"><h3 class="section-heading">Alert Information</h3><p class="subtitle">เมื่อเชื่อมต่อเซนเซอร์จริง ระบบจะแสดงรายการแจ้งเตือนตามข้อมูลที่ได้รับ</p></div>
-</section>
-
-<section class="page" id="history">
-  <div class="page-title"><div><h1>Monitoring History</h1><div class="subtitle">ประวัติค่าการตรวจวัดจากระบบ</div></div></div>
-  <div class="card table-wrap">
-    <table><thead><tr><th>TIME</th><th>MQ-2</th><th>MQ-135</th><th>STATUS</th><th>SOURCE</th></tr></thead>
-    <tbody>
-      <tr><td>14:00</td><td>186</td><td>92</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
-      <tr><td>13:00</td><td>245</td><td>110</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
-      <tr><td>12:00</td><td>430</td><td>175</td><td><span class="pill amber">Warning</span></td><td>Demo</td></tr>
-      <tr><td>11:00</td><td>210</td><td>98</td><td><span class="pill green">Normal</span></td><td>Demo</td></tr>
-    </tbody></table>
-  </div>
-  <div class="footer-note">ประวัติทั้งหมดเป็นข้อมูลตัวอย่าง</div>
-</section>
-
-<section class="page" id="device">
-  <div class="page-title"><div><h1>Device Status</h1><div class="subtitle">สถานะการเชื่อมต่ออุปกรณ์ตรวจวัด</div></div></div>
-  <div class="card">
-    <div class="card-label">DEVICE ID</div><div class="metric-value" style="font-size:22px">SMOKEGUARD-001</div>
-    <div class="profile-row"><span>Connection Status</span><span class="status-warn">● Offline</span></div>
-    <div class="profile-row"><span>Microcontroller</span><span>Arduino UNO + ESP8266</span></div>
-    <div class="profile-row"><span>Sensors</span><span>MQ-2 / MQ-135</span></div>
-    <div class="profile-row"><span>Last Received</span><span>Not connected</span></div>
-    <div class="profile-row"><span>Data Source</span><span>Mock Data</span></div>
+<!-- LOGIN -->
+<section id="login" class="screen auth-screen">
+  <div class="auth-box">
+    <div class="brand">
+      <div class="logo">⌁</div>
+      <h1>SmokeGuard</h1>
+      <p>SECURE SIGN IN</p>
+    </div>
+    <div class="auth-card">
+      <h2>เข้าสู่ระบบ</h2>
+      <p class="description">กรอกอีเมลและรหัสผ่านเพื่อเข้าใช้งาน</p>
+      <form id="loginForm">
+        <div class="field">
+          <label>อีเมล</label>
+          <input id="loginEmail" type="email" placeholder="example@email.com" required>
+        </div>
+        <div class="field">
+          <label>รหัสผ่าน</label>
+          <input id="loginPassword" type="password" placeholder="กรอกรหัสผ่าน" required>
+        </div>
+        <button class="primary" type="submit">เข้าสู่ระบบ</button>
+      </form>
+      <div class="auth-footer">
+        ยังไม่มีบัญชี?
+        <button class="text-button" onclick="showScreen('register')">สมัครสมาชิก</button>
+      </div>
+      <p class="note">ระบบเข้าสู่ระบบจริงจะเชื่อม Firebase Authentication ในขั้นตอนถัดไป</p>
+    </div>
   </div>
 </section>
 
-<section class="page" id="profile">
-  <div class="page-title"><div><h1>User Profile</h1><div class="subtitle">ข้อมูลบัญชีผู้ใช้งาน</div></div></div>
-  <div class="card form">
-    <div class="profile-row"><span>Username</span><span>Administrator</span></div>
-    <div class="profile-row"><span>Email</span><span>Not connected</span></div>
-    <div class="profile-row"><span>Role</span><span>System Administrator</span></div>
-    <div class="profile-row"><span>Project</span><span>SmokeGuard</span></div>
-  </div>
-</section>
+<!-- MAIN APP -->
+<div id="mainApp" class="app">
+  <header class="topbar">
+    <div class="top-brand">⌁ <span>Smoke</span>Guard</div>
+    <div class="demo">● DEMO MODE</div>
+  </header>
 
-<section class="page" id="login">
-  <div class="page-title"><div><h1>Welcome to SmokeGuard</h1><div class="subtitle">ระบบเฝ้าระวังและแจ้งเตือนค่าควันในชุมชน</div></div></div>
-  <div class="card form">
-    <h3 class="section-heading">Sign in</h3>
-    <div class="field"><label>Email address</label><input type="email" placeholder="Enter your email"></div>
-    <div class="field"><label>Password</label><input type="password" placeholder="Enter your password"></div>
-    <button class="btn primary" id="loginButton">Sign in</button>
-    <p class="footer-note">หน้าล็อกอินนี้ยังเป็นตัวอย่าง ยังไม่ได้เชื่อมระบบบัญชี Firebase</p>
-  </div>
-</section>
+  <main class="content">
 
-</div>
-</main>
+    <section id="dashboard" class="page active">
+      <h2>Dashboard</h2>
+      <p class="sub">ภาพรวมการตรวจวัดคุณภาพอากาศในชุมชน</p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">MQ-2 SENSOR</div>
+          <div class="value">186</div>
+          <div class="status">● Normal · Demo</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MQ-135 SENSOR</div>
+          <div class="value">92</div>
+          <div class="status">● Normal · Demo</div>
+        </div>
+        <div class="card">
+          <div class="card-label">DEVICE STATUS</div>
+          <div class="value" style="color:var(--amber)">Offline</div>
+          <div class="sub">ยังไม่ได้เชื่อมต่ออุปกรณ์จริง</div>
+        </div>
+        <div class="card">
+          <div class="card-label">ACTIVE ALERTS</div>
+          <div class="value">01</div>
+          <div class="sub">ข้อมูลตัวอย่าง</div>
+        </div>
+      </div>
+      <h3 class="section-title">สถานะระบบล่าสุด</h3>
+      <div class="card">
+        <div class="info-row"><span>MQ-2</span><span class="status">Normal</span></div>
+        <div class="info-row"><span>MQ-135</span><span class="status">Normal</span></div>
+        <div class="info-row"><span>อุปกรณ์</span><span style="color:var(--amber)">Offline</span></div>
+      </div>
+    </section>
+
+    <section id="monitoring" class="page">
+      <h2>Monitoring</h2>
+      <p class="sub">รายละเอียดค่าที่ได้รับจากเซนเซอร์</p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-label">MQ-2</div>
+          <div class="value">186 <span class="unit">ADC</span></div>
+          <div class="status">Normal · Demo</div>
+        </div>
+        <div class="card">
+          <div class="card-label">MQ-135</div>
+          <div class="value">92 <span class="unit">ADC</span></div>
+          <div class="status">Normal · Demo</div>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:18px">ค่าที่แสดงเป็นข้อมูลจำลอง ไม่ใช่ค่าตรวจวัดจริง</p>
+    </section>
+
+    <section id="alerts" class="page">
+      <h2>Alert Center</h2>
+      <p class="sub">ศูนย์รวมการแจ้งเตือนจากระบบ</p>
+      <div class="alert-box">
+        <strong>⚠ ตัวอย่างค่าจากเซนเซอร์สูงกว่าระดับที่กำหนด</strong>
+        <p>รายการแจ้งเตือนจำลอง · MQ-2 / MQ-135</p>
+        <p>19 พฤศจิกายน 2026 · 13:30</p>
+      </div>
+    </section>
+
+    <section id="history" class="page">
+      <h2>History</h2>
+      <p class="sub">ประวัติการตรวจวัดตัวอย่าง</p>
+      <div class="card">
+        <div class="info-row"><span>14:00 · MQ-2 186</span><span class="status">Normal</span></div>
+        <div class="info-row"><span>13:00 · MQ-2 245</span><span class="status">Normal</span></div>
+        <div class="info-row"><span>12:00 · MQ-2 430</span><span style="color:var(--amber)">Warning</span></div>
+        <div class="info-row"><span>11:00 · MQ-2 210</span><span class="status">Normal</span></div>
+      </div>
+    </section>
+
+    <section id="device" class="page">
+      <h2>Device Status</h2>
+      <p class="sub">สถานะการเชื่อมต่ออุปกรณ์</p>
+      <div class="card">
+        <div class="info-row"><span>Device ID</span><span>SMOKEGUARD-001</span></div>
+        <div class="info-row"><span>Connection</span><span style="color:var(--amber)">Offline</span></div>
+        <div class="info-row"><span>Controller</span><span>Arduino + ESP8266</span></div>
+        <div class="info-row"><span>Sensors</span><span>MQ-2 / MQ-135</span></div>
+        <div class="info-row"><span>Data source</span><span>Mock Data</span></div>
+      </div>
+    </section>
+
+    <section id="profile" class="page">
+      <h2>Profile</h2>
+      <p class="sub">ข้อมูลบัญชีผู้ใช้งาน</p>
+      <div class="card">
+        <div class="info-row"><span>ชื่อ</span><span id="profileName">ผู้ใช้งาน</span></div>
+        <div class="info-row"><span>อีเมล</span><span id="profileEmail">-</span></div>
+        <div class="info-row"><span>เบอร์โทรศัพท์</span><span id="profilePhone">-</span></div>
+        <div class="info-row"><span>สถานะ OTP</span><span style="color:var(--amber)">ยังไม่ยืนยัน</span></div>
+      </div>
+      <button class="logout" id="logoutButton">ออกจากระบบ</button>
+    </section>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-page="dashboard"><span class="nav-icon">▦</span>หน้าหลัก</button>
+    <button class="nav-item" data-page="monitoring"><span class="nav-icon">◉</span>ตรวจวัด</button>
+    <button class="nav-item" data-page="alerts"><span class="nav-icon">⚑</span>แจ้งเตือน</button>
+    <button class="nav-item" data-page="history"><span class="nav-icon">▤</span>ประวัติ</button>
+    <button class="nav-item" data-page="profile"><span class="nav-icon">♙</span>โปรไฟล์</button>
+  </nav>
 </div>
 
 <script>
-const navButtons = document.querySelectorAll('[data-page]');
-const pages = document.querySelectorAll('.page');
-const currentPage = document.getElementById('currentPage');
-
-function showPage(pageId) {
-  pages.forEach(page => page.classList.toggle('active', page.id === pageId));
-  navButtons.forEach(button => button.classList.toggle('active', button.dataset.page === pageId));
-  currentPage.textContent = pageId.toUpperCase();
-  window.scrollTo({top:0, behavior:'smooth'});
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(el=>el.classList.remove('active'));
+  document.getElementById('mainApp').classList.remove('active');
+  document.getElementById(id).classList.add('active');
 }
 
-navButtons.forEach(button => {
-  button.addEventListener('click', () => showPage(button.dataset.page));
+function showPage(id){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.page===id);
+  });
+  window.scrollTo(0,0);
+}
+
+document.querySelectorAll('.nav-item').forEach(btn=>{
+  btn.addEventListener('click',()=>showPage(btn.dataset.page));
 });
 
-document.getElementById('loginButton').addEventListener('click', () => {
-  showPage('dashboard');
+document.getElementById('registerForm').addEventListener('submit',function(e){
+  e.preventDefault();
+
+  const name=document.getElementById('fullname').value.trim();
+  const email=document.getElementById('regEmail').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const password=document.getElementById('regPassword').value;
+  const confirm=document.getElementById('confirmPassword').value;
+
+  if(password!==confirm){
+    alert('รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน');
+    return;
+  }
+
+  if(password.length<8){
+    alert('รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร');
+    return;
+  }
+
+  alert('หน้าสมัครสมาชิกทดลองเท่านั้น ยังไม่ได้บันทึกบัญชีจริง กรุณารอการเชื่อมต่อระบบ Firebase');
 });
+
+document.getElementById('loginForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  alert('ระบบ Login ยังไม่ได้เชื่อม Firebase Authentication จึงยังไม่สามารถเข้าสู่ระบบจริงได้');
+});
+
+document.getElementById('logoutButton').addEventListener('click',function(){
+  showScreen('welcome');
+});
+
 </script>
 </body>
 </html>
