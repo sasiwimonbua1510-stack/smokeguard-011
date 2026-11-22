@@ -859,40 +859,43 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 // แสดงข้อมูลผู้ใช้ในหน้า Profile
 // =====================================
 
-function updateProfile() {
+async function updateProfile() {
   const user = auth.currentUser;
 
   if (!user) return;
 
   const nameElement = document.getElementById('profileName');
   const emailElement = document.getElementById('profileEmail');
+  const phoneElement = document.getElementById('profilePhone');
 
-  if (nameElement) {
-    nameElement.textContent = user.displayName || 'ผู้ใช้งาน SmokeGuard';
-  }
-
-  if (emailElement) {
-    emailElement.textContent = user.email || '-';
-  }
-}
-
-// =====================================
-// ออกจากระบบ
-// =====================================
-
-document.getElementById('logoutButton').addEventListener('click', async function() {
   try {
-    await auth.signOut();
+    const userDoc = await db.collection('users').doc(user.uid).get();
 
-    alert('ออกจากระบบเรียบร้อยแล้ว');
+    if (userDoc.exists) {
+      const data = userDoc.data();
 
-    showScreen('welcome');
+      if (nameElement) {
+        nameElement.textContent = data.fullname || user.displayName || 'ผู้ใช้งาน SmokeGuard';
+      }
+
+      if (emailElement) {
+        emailElement.textContent = data.email || user.email || '-';
+      }
+
+      if (phoneElement) {
+        phoneElement.textContent = data.phone || '-';
+      }
+    } else {
+      if (nameElement) nameElement.textContent = user.displayName || 'ผู้ใช้งาน SmokeGuard';
+      if (emailElement) emailElement.textContent = user.email || '-';
+      if (phoneElement) phoneElement.textContent = '-';
+    }
 
   } catch (error) {
-    alert('ออกจากระบบไม่สำเร็จ');
-    console.error(error);
+    console.error('โหลดข้อมูลโปรไฟล์ไม่สำเร็จ:', error);
+    alert('ไม่สามารถโหลดข้อมูลโปรไฟล์ได้');
   }
-});
+}
 
 
 // =====================================
